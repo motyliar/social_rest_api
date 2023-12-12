@@ -1,5 +1,5 @@
 const User = require('../../models/User/user_model');
-const ServerMessage = require('../../core/const');
+const ServerMessage = require('../../core/servermessage');
 const mongoose = require('mongoose');
 
 

@@ -1,6 +1,6 @@
 const Message = require('../../models/Message/message_model');
 const { singleUserModel, messageModel } = require('../../models/Message/message_sub_models');
-const ServerMessage = require('../../core/const');
+const ServerMessage = require('../../core/servermessage');
 const { errorHandle } = require('../../middlewere/error_handle');
 const  MessageHelpers = require('./messages_helpers');
 const mongoose = require('mongoose');

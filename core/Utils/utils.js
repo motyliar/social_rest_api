@@ -30,6 +30,10 @@ class Utils {
         return currentDate;
     }
 
+    getData() {
+        return `${this.getCurrentDay()} ${this.getCurrentTime()}`
+    }
+
 }
 
 module.exports = new Utils();

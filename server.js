@@ -8,6 +8,7 @@ const userRouter = require('./routes/User/user_routes');
 const connectionRouter = require('./routes/Connection/connection_routes');
 const authRouter = require('./routes/User/auth');
 const messagesRouter = require('./routes/Messages/messages_routes');
+const noticeRouter = require('./routes/Notice/notice_router');
 
 const PORT = process.env.PORT || 3000;
 const URL = process.env.URL;
@@ -26,7 +27,7 @@ app.use('/', authRouter);
 app.use(`${USERROUTECODE}/climbuser`, userRouter);
 app.use('/connection', connectionRouter);
 app.use('/message',messagesRouter);
-
+app.use('/notice', noticeRouter);
 mongoose.connect(URL).then(() => {
      app.listen(PORT, () => {
         console.log(`Server on ${PORT}`);
