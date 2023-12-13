@@ -2,6 +2,7 @@ const NoticeRepositoryImpl = require('../notice_repository_impl');
 const Notice = require('../../../models/Notice/notice_model');
 const {Comment} = require('../../../models/Notice/notice_submodel');
 const ServerMessage = require('../../../core/servermessage');
+const utils = require('../../../core/Utils/utils');
 
 const noticeRepository = new NoticeRepositoryImpl();
 
@@ -33,11 +34,11 @@ class UpdateNoticeService {
 
         const data = await noticeRepository.updateOneComment(id, commentId, newContent);
 
-        if(data) {
-            res.status(200).json(data);
-        } else {
-            res.status(404).json({message: ServerMessage.notFound});
-        }
+       try {
+        utils.responseData(res, data, data);
+       } catch (error) {
+        res.status(500).json({error: error});
+       }
     }
 }
 

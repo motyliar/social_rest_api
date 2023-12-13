@@ -37,11 +37,8 @@ class NoticeRepositoryImpl extends NoticeRepository {
             return data;
         }
         } catch (error) {
-            if(error.name === "CastError") {
-                return null;
-            } else {
-                throw error;
-            }
+            Utils.errorSwitch(error);
+            
         }
     }
 
@@ -52,11 +49,7 @@ class NoticeRepositoryImpl extends NoticeRepository {
                 return data;
             }
         } catch(error) {
-            if(error.name === "CastError") {
-                return {"status" : ServerMessage.notFound}
-            } else {
-                throw Error(error);
-            }
+            Utils.errorSwitch(error);
         }
     }
     /**
@@ -96,11 +89,7 @@ class NoticeRepositoryImpl extends NoticeRepository {
             } 
 
         } catch (error) {
-            if(error.name === "CastError") {
-                return null;
-            } else {
-                throw error;
-            }
+            Utils.errorSwitch(error);
         }
     }
     async deleteManyNotices(idList) {
@@ -125,11 +114,7 @@ class NoticeRepositoryImpl extends NoticeRepository {
                 } else null;
         }
         catch(error) {
-            if(error.name === "CastError") {
-                return {"status": ServerMessage.notFound}
-            } else {
-                throw Error(error);
-            }
+           Utils.errorSwitch(error);
         }
     }
 
@@ -149,11 +134,7 @@ class NoticeRepositoryImpl extends NoticeRepository {
                 null;
             }
       } catch (error) {
-        if(error.name === "CastError") {
-            return {"status": ServerMessage.notFound};
-        } else {
-             throw Error(error)
-        }
+        Utils.errorSwitch(error);
       }
     }
 

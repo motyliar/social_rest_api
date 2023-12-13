@@ -1,3 +1,5 @@
+const ServerMessage = require('../servermessage');
+
 const ONE_MONTH = 1;
 const INDEX_TO_CUT = 2;
 
@@ -30,6 +32,22 @@ class Utils {
 
     getData() {
         return `${this.getCurrentDay()} ${this.getCurrentTime()}`
+    }
+
+    errorSwitch(error) {
+        if(error.name === "CastError") {
+            return {"status" : ServerMessage.notFound};
+        } else {
+            throw Error(error);
+        }
+    }
+
+    responseData(response ,data, success, failed ) {
+        if(data) {
+            response.status(200).json(success ? success : {message: ServerMessage.success});
+        } else {
+            response.status(404).json(failed ? failed : {message: ServerMessage.notFound});
+        }
     }
 
 }

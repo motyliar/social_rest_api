@@ -1,6 +1,7 @@
 const NoticeRepositoryImpl = require('../notice_repository_impl');
 const Notice = require('../../../models/Notice/notice_model');
 const ServerMessage = require('../../../core/servermessage');
+const utils = require('../../../core/Utils/utils');
 
 const noticeRepository = new NoticeRepositoryImpl();
 
@@ -12,11 +13,7 @@ class DeleteNoticeServices {
 
        try {
         const data = await noticeRepository.deleteSingleNotice(id);
-        if(data) {
-            res.status(200).json({status: ServerMessage.success, removed: data});
-        } else {
-            res.status(404).json({message: ServerMessage.notFound});
-        }
+        utils.responseData(res, data, {status: ServerMessage.success, removed: data});
        } catch (error) {
         res.status(500).json({error: error});
 
