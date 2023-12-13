@@ -18,14 +18,7 @@ async getNotices() {
     async getSingleNotice(id) {
         throw new ServerError("This method should be overridden in subclasses");
     }
-    /** 
-     * Function to create new Notice
-     * @POST
-     * @throws {Error} This method should be overridden in subclasses
-     */
-    async createNotice(notice) {
-    throw new ServerError("This method should be overridden in subclasses");
-    }
+   
     /**
      * Find notice created by user
      * @GET
@@ -34,12 +27,34 @@ async getNotices() {
         throw new ServerError("This method should be overridden in subclasses");
     }
     /**
+     * Get notice by pagination page/pagesize
+     * @GET
+      */
+    async getNoticesByPagination(page, pageSize) {
+        throw new ServerError("This method should be overridden in subclasses"); 
+    } 
+    /**
+     * Get notice by Category/Pagination
+     * @GET
+     */
+    async paginationNoticesByFieldName(page, pageSize, category) {
+        throw new ServerError("This method should be overridden in subclasses");
+    } 
+    /**
      * Add comment to Notice
      * @POST
      */
     async addComment(id, comment) {
         throw new ServerError("This method should be overridden in subclasses");
     }
+     /** 
+     * Function to create new Notice
+     * @POST
+     * @throws {Error} This method should be overridden in subclasses
+     */
+     async createNotice(notice) {
+        throw new ServerError("This method should be overridden in subclasses");
+        }
     /**
      * Delete single notice
      * @DELETE

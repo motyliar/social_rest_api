@@ -50,6 +50,24 @@ class Utils {
         }
     }
 
+    paginationHelper(page, pageSize, data,) {
+        const messageCount = data.length;
+        const totalPages = Math.ceil(messageCount / pageSize);
+        if(page < 1 || page > totalPages) {
+            return {"message" : ServerMessage.params}
+        } else {
+            const startIndex = (page - 1) * pageSize;
+            const endIndex = page * pageSize;
+            const paginatedMessage = data.slice(startIndex, endIndex);
+            return {
+                totalpages: totalPages,
+                documentSize: messageCount,
+                message: ServerMessage.success,
+                data: paginatedMessage,
+              };
+        }
+    }
+
 }
 
 module.exports = new Utils();

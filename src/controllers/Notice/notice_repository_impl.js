@@ -42,6 +42,35 @@ class NoticeRepositoryImpl extends NoticeRepository {
         }
     }
 
+    async getNoticesByPagination(page, pageSize) {
+        const data = await Notice.find({});
+        try {
+            if(data) {
+                return Utils.paginationHelper(page, pageSize, data);
+       
+               } else {
+                   throw Error(ServerMessage.fail);
+               }
+        } catch (error) {
+            throw new Error(ServerMessage.fail);
+        }
+    }
+
+    async paginationNoticesByFieldName(page, pageSize, fieldParrent, fieldChild) {
+       
+            const data = await Notice.where(fieldParrent).equals(fieldChild);
+       
+        try {
+            if(data) {
+               return  Utils.paginationHelper(page, pageSize, data);
+            } else {
+                throw new Error(ServerMessage.fail);
+            }
+        } catch(error) {
+            throw new Error(ServerMessage.fail);
+        }
+    }
+
     async findNoticeCreatedByUser(userId) {
         try {
             const data = await Notice.where("authorId").equals(userId);
@@ -49,7 +78,7 @@ class NoticeRepositoryImpl extends NoticeRepository {
                 return data;
             }
         } catch(error) {
-            Utils.errorSwitch(error);
+            Utils.errorSwitch(data);
         }
     }
     /**

@@ -28,6 +28,48 @@ class GetNoticeServices {
 
    }
 
+   async getNoticesByPagination( req, res) {
+     const page = req.query.page;
+     const pageSize = req.query.pageSize;
+     let data;
+     try {
+         data = await noticeRepository.getNoticesByPagination(page, pageSize);
+     } catch(error) {
+        throw new Error(error.message);
+     }
+     try {
+        if(data.message === ServerMessage.fail) {
+            res.status(404).json(data.message);
+         } else {
+            res.status(200).json(data);
+         }
+     } catch (error) {
+        res.status(500).json({error: error.message});
+     }
+   }
+
+   async paginationNoticesByFieldName(req, res) {
+        const page = req.query.page;
+        const pageSize = req.query.pageSize;
+        const fieldParent = req.query.parent;
+        const fieldChild = req.query.child;
+        let data;
+        try {
+            data = await noticeRepository.paginationNoticesByFieldName(page, pageSize, fieldParent, fieldChild);
+    } catch(error) {
+        throw new Error(error.message);
+    }
+       try {
+        if(data.message === ServerMessage.fail) {
+            res.status(404).json(data.message);
+        } else {
+            res.status(200).json(data);
+        }
+       } catch(error) {
+        res.status(500).json({error: error.message});
+       }
+   }
+
    async findNoticeCreatedByUser(req,res) {
         const  { id } = req.params;
 
