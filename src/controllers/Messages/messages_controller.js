@@ -134,7 +134,7 @@ class MessageActions {
           const user = await MessageHelpers.getSingleUserMessages(direction, userID);
           if(user)
           {
-          console.log(user[0].messages)
+          
           const messageCount = user[0].messages.length;
           const totalPages = Math.ceil(messageCount / pageSize);
           if(page < 1 || page > totalPages) {
@@ -159,8 +159,7 @@ class MessageActions {
      * Creating new user in message user array
      * @function POST
      * @param {newUser} - is req.body to store new user
-     * @param {req.query.get} - store fieldName of message table
-     * @param {req.query.return} - store fieldName of message table
+    
      * @returns {send, received} - Arrays with new user
      */ 
     async madeUserTable (req, res) {
@@ -171,8 +170,8 @@ class MessageActions {
        
         try {
             
-            const send = await Message.findOne({"fieldName" : req.query.get});
-            const received = await Message.findOne({"fieldName" : req.query.return});
+            const send = await Message.findOne({"fieldName" : "send"});
+            const received = await Message.findOne({"fieldName" : "received"});
            
             
             if(!send && !received) {

@@ -25,6 +25,8 @@ const singleUserSchema = Schema({
     userID: {type: String, required: true},
     userEmail: {type: String,default: "mail", required: false},
     messages: {type: [messageModel.schema], default: [], required: false},
+    createdAt: {type: String, default: () => Utils.getData()},
+    updatedAt: {type: String, default: () => Utils.getData()},
     
 });
 

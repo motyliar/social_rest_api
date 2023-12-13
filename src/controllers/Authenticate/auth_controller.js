@@ -5,25 +5,42 @@ const bcrypt = require('bcryptjs');
 const KEY = process.env.KEY;
 const Utils = require('../../core/Utils/utils');
 const ServerMessage = require('../../core/servermessage');
+const Message = require('../../models/Message/message_model');
+const { singleUserModel, messageModel } = require('../../models/Message/message_sub_models');
 
 
 
-const userRegister = (req, res, next) => {
+const userRegister = async (req, res, next) => {
+
+    let newUserId;
     bcrypt.hash(req.body.userAuthID, 10, function(err, hashedPass) {
         if(err) {
             res.status(500).json({err});
         }
-        const newUser = new User ({
+       const newUser = new User ({
             userAuthID: hashedPass,
             userName: req.body.userName,
             userEmail: req.body.userEmail,
 
         });
 
-       newUser.save().then(newUser => {res.status(200).json({message: 'success', id: newUser._id})});
-
-        
+       newUser.save().then(newUser =>  {
+        newUserId = newUser._id,
+        res.status(200).json({message: 'success', id: newUser._id},
+       
+        )});
+         
     });
+    const tableUser = new singleUserModel({
+        "userID": newUserId, "userEmail": req.body.userEmail
+    });
+            const send = await Message.findOne({"fieldName" : "send"});
+            const received = await Message.findOne({"fieldName" : "received"});
+            send.user.push(tableUser);
+            await send.save();
+            received.user.push(tableUser);
+            await received.save();
+
 } 
     const login = async (req,res) => {
         try {
