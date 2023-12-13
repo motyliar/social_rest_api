@@ -3,6 +3,8 @@ const User = require('../../models/User/user_model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const KEY = process.env.KEY;
+const Utils = require('../../core/Utils/utils');
+const ServerMessage = require('../../core/servermessage');
 
 
 
@@ -26,16 +28,18 @@ const userRegister = (req, res, next) => {
     const login = async (req,res) => {
         try {
             const user = await User.findOne({'userEmail': req.body.userEmail});
-            if(user) {
+            if(user)  {
+                user.active.isActive = true;
+                user.active.lastLoggedIn = Utils.getData();
+                await user.save();
                 bcrypt.compare(req.body.userAuthID, user.userAuthID, function(err, result){
                     if(err) {
                         res.status(500).json({ error: 'server-error'})
                     }
-                    if(result) {
+                    if(result)  {
                         let token = jwt.sign({userEmail: user.userEmail}, `${KEY}`,  {expiresIn: '20h'})
                         let id = user._id
-                        let login = user.name
-                        res.status(200).json({userEmail: user.userEmail ,userAuthID: user.userAuthID , token: token, id: id,})
+                        res.status(200).json({userEmail: user.userEmail ,userAuthID: user.userAuthID , token: token, id: id, user: user})
                     } else { res.status(401).json({message: 'wrong-password'})}
                     
                 })}
@@ -46,8 +50,23 @@ const userRegister = (req, res, next) => {
     } 
     } 
 
+    const logout = async (req,res) => {
+        try {
+            const user = await User.findOne({"userEmail": req.body.userEmail});
+            if(user) {
+                user.active.isActive = false;
+                await user.save();
+                res.status(200).json({message: ServerMessage.logout, active: user.active.isActive});
+            } else {
+                res.status(404).json({message: ServerMessage.notFound});
+            }
+        } catch (error) {
+            res.status(500).json({error: error.message});
+        }
+    }
 
-    module.exports = {userRegister, login}
+
+    module.exports = {userRegister, login, logout}
 
 
 

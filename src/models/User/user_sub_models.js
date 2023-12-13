@@ -62,6 +62,11 @@ const detailsSchema = Schema({
     phone: {type:String, required:false},
 });
 
+const activeSchema = Schema({
+    isActive: {type: Boolean, default: false, required: true},
+    lastLoggedIn: {type: String, default: '0000 00 00', required: true}
+})
+
 
 const friendsModel = mongoose.model('friends', friendsSchema);
 const preferencesModel = mongoose.model('preferences', preferencesSchema);
@@ -69,6 +74,6 @@ const detailsModel = mongoose.model('details', detailsSchema);
 
 
 
-module.exports = { messageDataModel, friendsModel, preferencesModel, detailsModel};
+module.exports = { messageDataModel, friendsModel, preferencesModel, detailsModel, activeSchema};
 
 

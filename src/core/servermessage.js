@@ -7,6 +7,7 @@ class ServerMessage {
     static fail = 'change-failed'
     static delete = 'delete'
     static params = 'wrong-params'
+    static logout = 'logout-success'
 }
 
 module.exports = ServerMessage;

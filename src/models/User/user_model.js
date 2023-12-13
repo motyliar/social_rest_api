@@ -1,4 +1,4 @@
-const  {messageDataModel, friendsModel, preferencesModel, detailsModel }
+const  {messageDataModel, friendsModel, preferencesModel, detailsModel, activeSchema }
  = require('./user_sub_models');
 const mongoose = require('mongoose');
 
@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
     friendsRequest: {type: [String], required:false},
     userChallengesIDs: {type: [String], default:[], required:false},
     preferences: {type: preferencesModel.schema, default: {mode: true, language: 'pl'}, required:false},
+    active: {type: activeSchema, default: () => ({}),  required: true},
     isAdmin: {type: Boolean, required:false, default:false},
     isUser: {type: Boolean, required:false, default:true},
 });
