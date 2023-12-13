@@ -4,11 +4,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-const userRouter = require('./routes/User/user_routes');
-const connectionRouter = require('./routes/Connection/connection_routes');
-const authRouter = require('./routes/User/auth');
-const messagesRouter = require('./routes/Messages/messages_routes');
-const noticeRouter = require('./routes/Notice/notice_router');
+const userRouter = require('../src/routes/User/user_routes');
+const connectionRouter = require('../src/routes/Connection/connection_routes');
+const authRouter = require('../src/routes/User/auth');
+const messagesRouter = require('../src/routes/Messages/messages_routes');
+const noticeRouter = require('../src/routes/Notice/notice_router');
 
 const PORT = process.env.PORT || 3000;
 const URL = process.env.URL;
@@ -28,6 +28,9 @@ app.use(`${USERROUTECODE}/climbuser`, userRouter);
 app.use('/connection', connectionRouter);
 app.use('/message',messagesRouter);
 app.use('/notice', noticeRouter);
+
+
+
 mongoose.connect(URL).then(() => {
      app.listen(PORT, () => {
         console.log(`Server on ${PORT}`);

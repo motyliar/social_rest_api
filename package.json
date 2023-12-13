@@ -2,10 +2,10 @@
   "name": "climbapp_database",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "db/server",
   "scripts": {
     "test": "jest --testTimeout=6000",
-    "dev": "nodemon server"
+    "dev": "nodemon db/server"
   },
   "author": "",
   "license": "ISC",

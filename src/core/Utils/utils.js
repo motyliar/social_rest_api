@@ -16,7 +16,6 @@ class Utils {
         const getSeconds = this._addSingleNumberZero(date.getSeconds());
         const getHours = this._addSingleNumberZero(date.getHours());
         const currentTime = `${getHours}:${getMinutes}:${getSeconds}`;
-        console.log(currentTime);
         return currentTime;
     }
 
@@ -26,7 +25,6 @@ class Utils {
         const currentMonth = this._addSingleNumberZero(date.getMonth() +ONE_MONTH);
         const currentDay = this._addSingleNumberZero(date.getDate());
         const currentDate = `${currentYear}.${currentMonth}.${currentDay}`;
-        console.log(currentDate);
         return currentDate;
     }
 
