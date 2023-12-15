@@ -43,6 +43,7 @@ const userRegister = async (req, res, next) => {
 
 } 
     const login = async (req,res) => {
+        console.log(req.body);
         try {
             const user = await User.findOne({'userEmail': req.body.userEmail});
             if(user)  {

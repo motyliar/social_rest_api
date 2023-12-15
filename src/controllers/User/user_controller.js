@@ -52,6 +52,7 @@ class UserAction {
     }
 
     async updateUser (req, res) {
+       
         try {
             const { id } = req.params
             const user = await User.findByIdAndUpdate(id, req.body);
@@ -59,7 +60,8 @@ class UserAction {
                 res.status(404).json({message : kUserNotFound}) 
             } else  {
             const newUser = await User.findById(id);
-            res.status(201).json({message: ServerMessage.changeSuccess, user : req.body})}
+            
+            res.status(201).json(newUser)}
         } catch(error) {
             res.status(500).json({message: error.message})
         }
@@ -189,6 +191,7 @@ class UserAction {
                         
                         if(action == 'add'){
                             const newRequest = req.body.friendsRequest;
+                            console.log('New request:', newRequest); 
                             user.friendsRequest.push(newRequest);
                             await user.save();
                         
@@ -237,8 +240,27 @@ class UserAction {
                      {return res.status(500).json({message: err})};
 
                 }
+
+                async getUserFriends(req, res) {
+                    const { id } = req.params;
+                    const user = await User.findById(id);
+                    const friendsList = user.friends;
+
+                    const findUsers = await User.find({"_id": {$in: friendsList}})
+                    const users = [];
+                    findUsers.forEach((friend) =>
+                     users.push({
+                        _id: friend._id,
+                         userName: friend.userName,
+                        profileAvatar: friend.profileAvatar,
+                        isActive: friend.active.isActive,
+                        lastLoggedIn: friend.active.lastLoggedIn,
+                         }));
+                       res.json(users);     
+                    }
+                }
         
-    }
+    
 
 
 

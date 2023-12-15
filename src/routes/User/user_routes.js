@@ -21,7 +21,8 @@ router.get('/single/:id', UserAction.getUser);
 router.get('/getfriends/:id', UserAction.friendsPagination);
 router.get('/friend/:id', UserAction.getFriends);
 router.get('/friendSize/:id', UserAction.getFriendsSize);
-// router.get('/notice/:id', async (req,res) => { await NoticeService.getUserById(req,res) });
+router.get('/userFriends/:id', UserAction.getUserFriends);
+
 
 
 router.post('/', UserAction.postUser);

@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     userName: {type: String, required:true},
     userEmail: {type: String, required:true},
     details: {type: detailsModel.schema,   required:false},
-    profileAvatar: {type: String, required:false},
+    profileAvatar: {type: String, default: "https://i.pinimg.com/564x/05/4f/e7/054fe717b6a9fe3907cce07956e4e5d8.jpg", required:true},
     messages: {type: [String], default: [], required:false},
     friends: {type: [String], default: [], required:false},
     friendsRequest: {type: [String], required:false},
