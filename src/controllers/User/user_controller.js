@@ -244,11 +244,12 @@ class UserAction {
                 async getUserFriends(req, res) {
                     const { id } = req.params;
                     const user = await User.findById(id);
-                    const friendsList = user.friends;
 
-                    const findUsers = await User.find({"_id": {$in: friendsList}})
-                    const users = [];
-                    findUsers.forEach((friend) =>
+                    if(user && user.friends.length > 0) {
+                        const friendsList = user.friends;
+                        const findUsers = await User.find({"_id": {$in: friendsList}})
+                        const users = [];
+                        findUsers.forEach((friend) =>
                      users.push({
                         _id: friend._id,
                          userName: friend.userName,
@@ -256,7 +257,16 @@ class UserAction {
                         isActive: friend.active.isActive,
                         lastLoggedIn: friend.active.lastLoggedIn,
                          }));
-                       res.json(users);     
+
+                       res.status(200).json(users);  
+                    } else {
+                        res.status(404).json({message: ServerMessage.notFound});
+                    }
+                    
+
+                    
+                    
+                    
                     }
                 }
         
