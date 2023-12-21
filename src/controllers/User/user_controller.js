@@ -180,6 +180,18 @@ class UserAction {
                 }
             }
 
+            async findUserByName (req, res) {
+                const { name } = req.params;
+                try {
+                    const users = await User.find({userName : { $regex : new RegExp(name, "i") }});
+
+                    res.status(200).json(users);
+
+                } catch (error) {
+                    res.status(500).json({error})
+                }
+            }
+
             async friendsRequest (req, res) {
                 const action = req.params.action;
                 try{
@@ -191,7 +203,7 @@ class UserAction {
                         
                         if(action == 'add'){
                             const newRequest = req.body.friendsRequest;
-                            console.log('New request:', newRequest); 
+                            
                             user.friendsRequest.push(newRequest);
                             await user.save();
                         

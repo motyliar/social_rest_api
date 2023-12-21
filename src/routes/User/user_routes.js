@@ -14,6 +14,7 @@ const router = express.Router();
 
 router.get('/all', UserAction.getAll);
 router.get('/single/:id', UserAction.getUser);
+router.get('/search/:name', UserAction.findUserByName);
 
 /**
  * @name FRIEND

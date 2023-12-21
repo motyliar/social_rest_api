@@ -30,8 +30,7 @@ class PostNoticeService {
        try {
         utils.responseData(res, data, data);
        } catch (error) {
-        res.status(500).json({error: error});
-        
+        res.status(500).json({error: error});    
     } 
     }
 }
