@@ -184,8 +184,13 @@ class UserAction {
                 const { name } = req.params;
                 try {
                     const users = await User.find({userName : { $regex : new RegExp(name, "i") }});
-
-                    res.status(200).json(users);
+                    const friends = [];
+                    users.forEach((friend) =>friends.push({_id: friend._id,
+                        userName: friend.userName,
+                       profileAvatar: friend.profileAvatar,
+                       isActive: friend.active.isActive,
+                       lastLoggedIn: friend.active.lastLoggedIn,} ));
+                    res.status(200).json(friends);
 
                 } catch (error) {
                     res.status(500).json({error})
