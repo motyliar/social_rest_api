@@ -12,8 +12,8 @@ const { singleUserModel, messageModel } = require('../../models/Message/message_
 
 const userRegister = async (req, res, next) => {
 
-    let newUserId;
-    bcrypt.hash(req.body.userAuthID, 10, function(err, hashedPass) {
+    let idToSave;
+    bcrypt.hash(req.body.userAuthID, 10, async function(err, hashedPass) {
         if(err) {
             res.status(500).json({err});
         }
@@ -24,22 +24,25 @@ const userRegister = async (req, res, next) => {
 
         });
 
-       newUser.save().then(newUser =>  {
-        newUserId = newUser._id,
+      await newUser.save().then(newUser =>  {
+       
         res.status(200).json({message: 'success', id: newUser._id},
        
+       
         )});
-         
+          idToSave = newUser._id;
+          const tableUser = new singleUserModel({
+            "userID": idToSave, "userEmail": req.body.userEmail
+        });
+                const send = await Message.findOne({"fieldName" : "send"});
+                const received = await Message.findOne({"fieldName" : "received"});
+                send.user.push(tableUser);
+                await send.save();
+                received.user.push(tableUser);
+                await received.save();
     });
-    const tableUser = new singleUserModel({
-        "userID": newUserId, "userEmail": req.body.userEmail
-    });
-            const send = await Message.findOne({"fieldName" : "send"});
-            const received = await Message.findOne({"fieldName" : "received"});
-            send.user.push(tableUser);
-            await send.save();
-            received.user.push(tableUser);
-            await received.save();
+
+    
 
 } 
     const login = async (req,res) => {

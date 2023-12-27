@@ -13,8 +13,8 @@ const messageSchema = Schema({
     content: {type:String, required: true},
     isRead:{type: Boolean, required: false, default:false},
     isReply:{type: Boolean, required: false, default:false},
-    datestamp: {type: String, default: () => Utils.getCurrentDay(), required: false},
-    timestamp: {type: String, default: () => Utils.getCurrentTime(), required: false},
+    createdAt: {type: String, default: () => Utils.getCurrentDay(), required: false},
+    updatedAt: {type: String, default: () => Utils.getCurrentTime(), required: false},
 });
 
 const messageModel = mongoose.model('messageModel', messageSchema);
