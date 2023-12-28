@@ -102,6 +102,9 @@ class MessageActions {
      * Geting single user messages
      * @function GET
      * @return {Object} user messages
+     * @param {String} userID params id in http
+     * @param {Object} direction req.body with object {"direction" : 'here you have to put send/received'}  
+     * @returns {Object} return messages from user by id 
      */
 
     async getUser(req,res) {
@@ -110,9 +113,13 @@ class MessageActions {
       
       try {
         const result = await MessageHelpers.getSingleUserMessages(direction, userID);
-        if(result) {
-          res.status(200).json(result)
-        } else {
+        if(result.message === "success") {
+          res.status(200).json(result.data)
+
+        } else if(result.message === 'no-data') {
+          res.status(204).send();
+        } 
+        else if(result.message === "not-found") {
           res.status(404).json({message: ServerMessage.userNotFound});
         } 
       } catch(error) {

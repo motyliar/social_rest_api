@@ -45,8 +45,16 @@ class MessageHelpers {
               
            }}
         ]);
-        return userData;
-     }
+        console.log(userData)
+        if(userData.length > 0 && userData[0].messages.length > 0) {
+        return {"message": "success", "data": userData}; 
+      } else if(userData.length > 0 && userData[0].messages.length === 0) {
+         return {"message" : "no-data"};
+      } 
+      else {
+         return {"message": "not-found"};
+      }
+     } 
 
     async getSingleMessage(direction, userID, message){
       const result = await Message.aggregate([
