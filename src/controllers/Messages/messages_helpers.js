@@ -5,8 +5,8 @@ class MessageHelpers {
 
    async sendSingleMessage(direction, recipient, message)  {
       const data =  await Message.findOneAndUpdate({
-         "fieldName" : direction , "user.userID": recipient
-         }, {$push : {'user.$.messages' : message}}, {new : true});
+         "fieldName" : "message" , "user.userID": recipient
+         }, {$push : {[`user.$.${direction}`] : message}}, {new : true});
       return data;
      }
 
@@ -47,7 +47,7 @@ class MessageHelpers {
         ]);
         console.log(userData)
         if(userData.length > 0 && userData[0].messages.length > 0) {
-        return {"message": "success", "data": userData}; 
+        return {"message": "success", "data": userData[0].messages}; 
       } else if(userData.length > 0 && userData[0].messages.length === 0) {
          return {"message" : "no-data"};
       } 

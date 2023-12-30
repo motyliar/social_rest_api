@@ -6,11 +6,13 @@ const router = express.Router();
 //GET
 router.get('/all/', MessageActions.getMessageTable);
 router.get('/single/:fieldName', MessageActions.findOneField);
-router.get('/user/:id', MessageActions.getUser);
-router.get('/singleMessage/:id', MessageActions.findSingleMessage);
+router.put('/normal/:id', MessageActions.findOneWhere);
+router.get('/find/:id', MessageActions.findOneMessage);
+
+router.post('/singleMessage/:id', MessageActions.findSingleMessage);
 router.get('/pagination/:id', MessageActions.getUserMessagesPagination);
 //POST
-
+router.post('/user/:id', MessageActions.getUser);
 router.post('/table/', MessageActions.createMessageTable);
 router.post('/create', MessageActions.madeUserTable);
 router.post('/sendmessage/', MessageActions.sendMessageUser);

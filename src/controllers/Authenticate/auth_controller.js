@@ -34,12 +34,12 @@ const userRegister = async (req, res, next) => {
           const tableUser = new singleUserModel({
             "userID": idToSave, "userEmail": req.body.userEmail
         });
-                const send = await Message.findOne({"fieldName" : "send"});
-                const received = await Message.findOne({"fieldName" : "received"});
+                const send = await Message.findOne({"fieldName" : "message"});
+                
                 send.user.push(tableUser);
                 await send.save();
-                received.user.push(tableUser);
-                await received.save();
+                
+               
     });
 
     

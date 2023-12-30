@@ -39,14 +39,14 @@ class MessageActions {
     async sendMessageUser (req, res) {
         const { id } = req.params;
         const recipientMessage = new messageModel(req.body);
-        const senderMessage = new messageModel({"to" : req.body.from , "from" : req.body.to, "subject" : req.body.subject, "content" : req.body.content});
+        const senderMessage = new messageModel({"to" : req.body.from , "from" : req.body.to, "sender" : req.body.sender, "recipient": req.body.recipient, "subject" : req.body.subject, "content" : req.body.content});
         const recipient = req.body.to;
         const sender = req.body.from;
 
         try {
-            const user = await MessageHelpers.sendSingleMessage(SEND_DIRECTION, recipient, recipientMessage);
+            const user = await MessageHelpers.sendSingleMessage(RECEIVED_DIRECTION, recipient, recipientMessage);
             if(user) {
-                const returnMessage = await MessageHelpers.sendSingleMessage(RECEIVED_DIRECTION, sender, senderMessage);
+                const returnMessage = await MessageHelpers.sendSingleMessage(SEND_DIRECTION, sender, senderMessage);
                
                 if(returnMessage) {
                 res.status(200).json({message: ServerMessage.success});} else {
@@ -71,7 +71,7 @@ class MessageActions {
         const direction = req.body.direction;
         const recipients = req.body.recipient;
         const recipientMessage = new messageModel(req.body.message);
-        const senderMessage = new messageModel({"to" : req.body.from , "from" : req.body.to, "subject" : req.body.subject, "content" : req.body.content});
+        const senderMessage = new messageModel({"to" : req.body.from , "from" : req.body.to, "sender" : req.body.sender, "recipient": req.body.recipient, "subject" : req.body.subject, "content" : req.body.content});
         const sender = req.body.message.from;
 
         const result = await MessageHelpers.sendMessageToMultipleUser(direction, recipients, recipientMessage);
@@ -199,6 +199,7 @@ class MessageActions {
      * Creating new Message object
      * @notes - Only for Admin function
      * @param {newField} - creating new message object
+     * @req should send {"fieldName" : "nameOfTable"}
      * @returns {newField} - return new object
      */
     async createMessageTable(req,res) {
@@ -277,8 +278,9 @@ class MessageActions {
    /**
     * Function for delete one message from user
     * @function deleteOne
-    * @param {string} userID 
-    * @param {string} messageIdToRemove 
+    * @param {string} userID send in api params
+    * @param {string} messageIdToRemove get from req.body { "messageId" : "id"}
+    * @param {string} direction get from req.body {"direction" : "send or received"}
     * @returns {Object} catch modifiedCount from updateOne to check what changed 
     */
    async deleteOne (req,res) {
@@ -290,7 +292,7 @@ try {
     const result = await Message.updateOne(
         { "fieldName": direction, "user.userID": userID },
         { $pull: { "user.$.messages": { _id: new ObjectId(messageIdToRemove) } } },
-        // {arrayFilters: [{ 'elem.userID': '12344'}]},
+ 
         );
         const update = await MessageHelpers.getSingleUserMessages(direction, userID);
         
@@ -346,17 +348,22 @@ try {
       const messageId = req.body.messageId;
       const field =req.body.field;
       try {
-        const result = await Message.updateOne(
-            {
-                "fieldName": direction,
-                "user.userID": userID,
-                "user.messages._id": new ObjectId(messageId)
-            },
-            { $set: { [`user.0.messages.$.${field}`]: update } },
+        console.log(userID);
+        console.log(req.body);
+        console.log('tworzy sie to okno');
+         const result = await Message.updateOne(
+          {
+            
+              "user.userID": userID,
+              "user.received._id": new ObjectId(messageId)
+          },
+          {$set: {
+            'user.$[outer].received.$[xxx].isRead' : update
+          }},
+          {arrayFilters: [{"outer.userID": userID} ,{"xxx._id" : new ObjectId(messageId)}]}
+          );
 
-        );
-
-        const newValues = await MessageHelpers.getSingleMessage(direction, userID, messageId);
+          const newValues = await MessageHelpers.getSingleMessage(direction, userID, messageId);
 
         if (result.modifiedCount > 0) {
             res.json({ message: ServerMessage.success, result: result.modifiedCount, new: newValues });
@@ -366,8 +373,60 @@ try {
     } catch (error) {
         res.status(500).json({ error: errorHandle(error) });
     }
-  }
-  }
+      }
+    
+      async findOneWhere(req,res) {
+        const userID = req.params.id
+        const messageId = req.body.message
+        const update = req.body.update
+        try {
+          const result = await Message.findOneAndUpdate(
+            { "user.userID": userID, "user.send._id": new ObjectId(messageId) },
+            { $set: { "user.$[].send.$[xxx].isRead": update } },
+            { 
+              multi: true,
+              strict: false,
+              arrayFilters: [ { "xxx._id": new ObjectId(messageId) }],
+              new: true }
+          );
+        console.log(result);
+        res.status(200).json(result);
+        } catch (error) {
+          res.status(500).json({mess: error.message})
+        }
+    
+    }
+
+    async findOneMessage(req, res) {
+      const { id } = req.params.id;
+      const message = req.body.message;
+
+      const result = await Message.find({"user.userID" : new ObjectId(id)},
+      {
+        projection: {
+          user: {
+            $elemMatch: {
+              userID: new ObjectId(id)
+            }
+          }
+        }
+      });
+
+      res.json(result);
+    }
+   
+
+}
+
+
+          
+          
+
+       
+          
+
+  
+
 
 
 
