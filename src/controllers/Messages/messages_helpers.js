@@ -10,19 +10,27 @@ class MessageHelpers {
       return data;
      }
 
-     async sendMessageToMultipleUser(direction, recipients, message) {
+     async sendMessageToMultipleUser(recipients, userID, message) {
       const data = await Promise.all(
          recipients.map(async recipient => {
             await Message.updateMany({
-               "fieldName": direction,
                "user.userID": recipient
-            }, {$push: {"user.$.messages": message}}, {new: true});
+            }, {$push: {"user.$.received": message}}, {new: true});
+            return recipient;
             
-         })
+         }));
+         console.log(data);
+         if(data.length === recipients.length) {
+            await Message.findOneAndUpdate({
+               "user.userID" : userID
+            }, {$push: {"user.$.send" : message}}) 
+            return data;
 
-      );
-      return data;
-       
+      
+   
+         } else {
+            return null;
+         }       
      }
      
      async getSingleUserMessages(direction, userID) {

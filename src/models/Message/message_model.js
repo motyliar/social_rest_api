@@ -20,8 +20,8 @@ const messageSchema = new Schema({
         content: {type:String, required: true},
         isRead:{type: Boolean, required: false, default:false},
         isReply:{type: Boolean, required: false, default:false},
-        createdAt: {type: String, default: () => Utils.getData(), required: false},
-        updatedAt: {type: String, default: () => Utils.getData(), required: false},
+        createdAt: {type: String, default: () => Utils.getData(), required: true, auto: true},
+        updatedAt: {type: String, default: () => Utils.getData(), required: true, auto: true},
 
     }], default: [], required: false},
     received:  {type: [{
@@ -34,15 +34,18 @@ const messageSchema = new Schema({
         content: {type:String, required: true},
         isRead:{type: Boolean, required: false, default:false},
         isReply:{type: Boolean, required: false, default:false},
-        createdAt: {type: String, default: () => Utils.getData(), required: false},
-        updatedAt: {type: String, default: () => Utils.getData(), required: false},
+        createdAt: {type: String, default: () => Utils.getData(), required: true, auto: true},
+        updatedAt: {type: String, default: () => Utils.getData(), required: true, auto: true},
     }], default: [], required: false},
     createdAt: {type: String, default: () => Utils.getData()},
     updatedAt: {type: String, default: () => Utils.getData()},
     }], default: [], required: false},
     
 
-});
+},);
+
+
+
 
 
 
