@@ -88,6 +88,61 @@ class MessageRepositoryImpl extends MessagesRepository {
         }
      } 
 
+     async getMessagesByPagination(userID,) {
+        const page = 1;
+        const perPage = 3;
+        const direction = 'received';
+        try {
+
+            const result = await Message.aggregate([
+                {$match: {"user.userID": userID}},
+                // {$project: {
+                //     user: {
+                //         $filter: {
+                //             input: "$user", as: "u", cond: {$eq: ["$$u.userID", userID] 
+                //         }},
+                //     } 
+
+                // }},
+                {$unwind: "$user"},
+                
+                {$unwind: "$user.received"},
+                { 
+                    $match: { 
+                        "user.userID": userID,
+                        "user.received.to": userID
+                    }
+                },
+                { 
+                    $replaceRoot: {
+                        newRoot: "$user.received"
+                    }
+                },
+                // {$project: {
+                //     messages: "$user.received",
+                // }},
+                { $skip: (page - 1) * perPage },
+                { $limit: perPage },
+                
+                
+            ]);
+            // const result = await Message.findOne({
+            //     "user.userID": userID
+            // }, {"user.received.$" : 1});
+            // const totalItems = result.user[0].received.length;
+            // const totalPages = totalItems / perPage;
+            // console.log(totalPages);
+
+
+            // if(result.user[0].received.length > 1) {
+            //     return result.user[0].received.slice((page - 1) * perPage, page * perPage) }
+                
+               return result
+        } catch (error) {
+            return new ServerError(error.message);
+        }
+     }
+
      /**
       * @Overriden methods
       * @POST
@@ -134,6 +189,14 @@ class MessageRepositoryImpl extends MessagesRepository {
         }
      }
 
+    async createUserMessageData() {
+        try {
+            
+        } catch(error) {
+            throw new Error(error.message);
+        }
+    }
+
      /**
       * @Override
       * @DELETE
@@ -178,7 +241,7 @@ class MessageRepositoryImpl extends MessagesRepository {
                 return {message: ServerMessage.notFound};
             }
         } catch(error) {
-            throw new Error(error.message);
+            throw new ServerError(error.message);
         }
     }
      

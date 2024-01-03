@@ -67,6 +67,12 @@ class GetMessagesUseCases {
     }
  }
 
+ async getMessagesByPagination(req,res) {
+    const userID = req.params.id;
+    const result = await messageRepository.getMessagesByPagination(userID);
+    res.status(200).json(result);
+ }
+
 
 }
 
