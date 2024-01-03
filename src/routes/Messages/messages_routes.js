@@ -5,6 +5,7 @@ const router = express.Router();
 const GetMessagesUseCases = require('../../controllers/Messages/usecase/get_messages_usecases');
 const PostMessagesUseCases = require('../../controllers/Messages/usecase/post_messages_usecases');
 const DeleteMessagesUseCases = require('../../controllers/Messages/usecase/delete_messages_usecases');
+const UpdateMessagesUseCases = require('../../controllers/Messages/usecase/update_messages_usecases');
 
 
 //GET
@@ -22,8 +23,7 @@ router.post('/create', MessageActions.madeUserTable);
 router.post('/sendmessage/', MessageActions.sendMessageUser);
 router.post('/multiple', MessageActions.sendMessageToMultilpeUsers);
 
-//PUT
-router.put('/update/:id', MessageActions.updateOneMessage);
+
 
 //DELETE
 
@@ -42,6 +42,8 @@ router.post('/add/single/', PostMessagesUseCases.sendNewMessageToOne);
 router.post('/add/many/', PostMessagesUseCases.sendNewMessageToMany);
 
 router.delete('/delete/:id', DeleteMessagesUseCases.deleteMessages);
+
+router.put('/update/:id', UpdateMessagesUseCases.updateMessage);
 
 
 

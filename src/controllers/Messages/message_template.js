@@ -15,6 +15,19 @@ function messageTemplate(to, from ,sender, recipient, subject, content) {
            
 } }
 
+class updateMessageParams {
+    constructor(userID, messageID, direction, update, field) {
+
+        this.userID = userID;
+        this.messageID = messageID;
+        this.direction = direction;
+        this.update = update;
+        this.field = field
+
+    }
+}
 
 
-module.exports = { messageTemplate }
+
+
+module.exports = { messageTemplate, updateMessageParams }
