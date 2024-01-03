@@ -35,6 +35,13 @@ class PostMessagesUseCases {
     
     }
 
+
+    /**
+     * 
+     * @param {String} userID id of user from app 
+     * @param {String} recipients list of many recipients to send message
+     * @param {Object} message object of message, creating like message template  
+     */
     async sendNewMessageToMany(req, res) {
         const userID = req.body.message.from;
         const recipients = req.body.recipients;
@@ -55,6 +62,19 @@ class PostMessagesUseCases {
             res.status(500).json({error: error.message});
         }
     }
+
+     /**
+     * Creating new Message object
+     * @notes - Only for Admin function
+     * @param {newField} - creating new message object
+     * @req should send {"fieldName" : "nameOfTable"}
+     * @returns {newField} - return new object
+     */
+     async createMessageTable(req,res) {
+        const newField = await Message.create(req.body);
+        res.status(200).json(newField);
+       
+        } 
 
 
 }

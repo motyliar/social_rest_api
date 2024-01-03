@@ -34,7 +34,7 @@ const receivedSchema = Schema({
     updatedAt: {type: String, default: () => Utils.getData(), required: false},
 });
 
-const receivedModel = mongoose.model('receivedModel', receivedSchema);
+
 
 
 const singleUserSchema = Schema({
@@ -52,7 +52,7 @@ const singleUserModel = mongoose.model('userMessage', singleUserSchema);
 
 
 
-module.exports = { singleUserModel, messageModel };
+module.exports = { receivedSchema };
 
 
 

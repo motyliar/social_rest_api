@@ -46,6 +46,16 @@ class MessagesRepository {
      async sendNewMessageToMany() {
         throw new ServerError("This method should be overridden in subclasses");
      }
+     // admin function for creating new user in Message DB
+
+     async createUserMessageData() {
+        throw new ServerError("This method should be overridden in subclasses");
+     }
+
+     // admin function to create messages DB with diffrent fieldName
+     async createNewMessageDB() {
+        throw new ServerError("This method should be overridden in subclasses");
+     }
 
      /**
       * @DELETE

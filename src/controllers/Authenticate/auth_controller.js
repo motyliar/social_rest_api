@@ -31,9 +31,13 @@ const userRegister = async (req, res, next) => {
        
         )});
           idToSave = newUser._id;
-          const tableUser = new singleUserModel({
-            "userID": idToSave, "userEmail": req.body.userEmail
-        });
+          const tableUser = {
+
+            "userID": idToSave,
+            "userEmail": req.body.userEmail,
+            "send": [],
+            "received": [],
+        }
                 const send = await Message.findOne({"fieldName" : "message"});
                 
                 send.user.push(tableUser);
