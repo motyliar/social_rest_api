@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const helmet = require('helmet');
+const compression = require('compression');
 
 const userRouter = require('../src/routes/User/user_routes');
 const connectionRouter = require('../src/routes/Connection/connection_routes');
@@ -16,7 +18,12 @@ const USERROUTECODE = process.env.USERROUTECODE;
 
 
 
-
+app.use(helmet());
+app.use(compression());
+app.use((req, res, next) => {
+   console.log(`${req.method} ${req.url}`);
+   next();
+ });
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 

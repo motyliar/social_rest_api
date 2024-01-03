@@ -398,19 +398,31 @@ try {
     }
 
     async findOneMessage(req, res) {
-      const { id } = req.params.id;
+      const { id } = req.params;
       const message = req.body.message;
+      console.log(id)
 
-      const result = await Message.find({"user.userID" : new ObjectId(id)},
-      {
-        projection: {
-          user: {
-            $elemMatch: {
-              userID: new ObjectId(id)
+      // const result =  await Message.findOne().where("user.userID").equals(id).select("user.$");
+
+      // TA FUNKCJA DZIAŁA BEZ ELEM MATCH
+      // const result = await Message.findOne({ 'user.userID': id, "user.received._id" : new ObjectId(message)}, {"user.received": {$elemMatch: {
+      //   _id: new ObjectId(message)
+      // }}}).exec()
+
+      const result = await Message.aggregate([
+        { $match: { 'user.userID': id, 'user.received._id': new ObjectId(message) } },
+        { $project: { 
+            user: {
+              $filter: {
+                input: '$user',
+                as: 'u',
+                cond: { $eq: ['$$u.userID', id] }
+              }
             }
-          }
+          } 
         }
-      });
+      ]).exec();
+
 
       res.json(result);
     }
