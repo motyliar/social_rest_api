@@ -54,28 +54,9 @@ class MessageRepositoryImpl extends MessagesRepository {
 
      async getSingleMessage(userID, direction, messageId ) {
         try {
-            const result = await Message.aggregate([
-               { $match: {
-                 "user.userID" : userID,
-                    },},
-                {$project: {
-                    user: {
-                        $filter: {
-                            input: "$user", as: "u", cond: {$eq: ["$$u.userID", userID] 
-                        }},
-                    } 
-                }},
-                {$unwind: "$user"},
-                {$project: {
-                    data: {
-                         $filter: {
-                            input: `$user.${direction}`, as: "m", cond: {$eq: ["$$m._id", new ObjectId(messageId)]}
-                         }
-                    }
 
-                }}   
-            ]);
-
+            const result = await Message.find({"userID": userID, [`${direction}._id`]: new ObjectId(messageId)}, {[`${direction}.$`]: 1});
+            
         if (result.length > 0) {
             return result;
         } else if(result.length === 0){
@@ -93,61 +74,33 @@ class MessageRepositoryImpl extends MessagesRepository {
         const perPage = 3;
         const direction = 'received';
         try {
-               
-        
-
             const result = await Message.aggregate([
-                {$match: {"user.userID": userID}},
-                 {$unwind: "$user"},
-                {$unwind: "$user.received"},
-                { 
-                    $match: { 
-                        "user.userID": userID,
-                        "user.received.to": userID
-                    }
-                },
-                { 
-                    $replaceRoot: {
-                        newRoot: "$user.received"
-                    }
-                }, 
+                { $match: { userID: userID } },
+             
                 
-               
-                { $skip: (page - 1) * perPage },
-                { $limit: perPage },
-                
-                
+                { $unwind: "$send" },
+                { $group: {_id: null, sendCount: { $sum: 1 } } }
             ]);
-            const total = await Message.aggregate([
-                {$match: {
-                    "user.userID": userID, "user.received.to": userID}},
-                { $unwind: '$user'},
-              {  $match: {
-                    "user.received.to": userID
-                }
-            },
-                {$unwind: '$user.received'},
-                {
-                    $group: {
-                        _id: null,
-                        totalCount: { $sum: 1 }
-                    }
-                }
-                
-            ])
-            // const result = await Message.findOne({
-            //     "user.userID": userID
-            // }, {"user.received.$" : 1});
-            // const totalItems = result.user[0].received.length;
-            // const totalPages = totalItems / perPage;
-            // console.log(totalPages);
+            const pagination = await Message.aggregate([
+                {$match: {userID: userID}},
+                {$project: {
+                    _id: 0, send: 1
+                }},
+                {$unwind: "$send"},
+                {$replaceRoot:
+                {newRoot: "$send"}},
+                {$skip: 0}, {$limit: 1},
+            ]);
+            const totalPages = Math.ceil(result[0].sendCount / perPage);
+        
+            return {totalDocuments : result[0].sendCount,
+                    totalPages : totalPages,
+                    currentPage: page,
+                    item : perPage,
+                    data: pagination,
 
-
-            // if(result.user[0].received.length > 1) {
-            //     return result.user[0].received.slice((page - 1) * perPage, page * perPage) }
-                
-               return {"list": result, "totalCount": total}
-        } catch (error) {
+        } } 
+        catch (error) {
             return new ServerError(error.message);
         }
      }

@@ -25,25 +25,24 @@ class updateMessageParams {
         this.update = update;
         this.field = field
 
+    }   
+    
+}
+
+class paginationMessageParams {
+    constructor(userID, page, perPage, direction) {
+        this.userID = userID;
+        this.page = page;
+        this.perPage = perPage;
+        this.direction = direction
     }
 }
 
 
 
 
-module.exports = { messageTemplate, updateMessageParams }
 
 
-// [{
-//     _id: { type: mongoose.Schema.Types.ObjectId, auto: true, required: false },
-//     to: {type: String, required:true},
-//     from: {type:String, required:true},
-//     sender: {type: String, required: true},
-//     recipient: {type: String, required: true},
-//     subject: {type:String, required:true},
-//     content: {type:String, required: true},
-//     isRead:{type: Boolean, required: false, default:false},
-//     isReply:{type: Boolean, required: false, default:false},
-//     createdAt: {type: String, default: () => Utils.getData(), required: false, },
-//     updatedAt: {type: String, default: () => Utils.getData(), required: false, },
-// }]
+module.exports = { messageTemplate, updateMessageParams, paginationMessageParams }
+
+

@@ -26,7 +26,7 @@ class GetMessagesUseCases {
   */
  async getUserMessages(req, res) {
     const userID = req.params.id;
-    const direction = req.query.direction || SEND_DIRECTION;
+    const direction = req.body.direction || SEND_DIRECTION;
 
         try {
             const result = await messageRepository.getUserMessages(userID, direction);
