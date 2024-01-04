@@ -213,9 +213,9 @@ class MessageRepositoryImpl extends MessagesRepository {
    async deleteMessage(userID, direction, messagesId ) {
     try {
         const result = await Message.updateOne({
-            "user.userID" : userID
+            "userID" : userID
         }, {$pull:
-             {[`user.$.${direction}`] :
+             {[`${direction}`] :
               {_id: {$in: messagesId.map(message => new ObjectId(message)) }}}}
         );
         if(result.modifiedCount > 0) {
@@ -235,9 +235,9 @@ class MessageRepositoryImpl extends MessagesRepository {
     async updateSingleMessage(updateParams) {
         try {
             const result = await Message.updateOne({
-                "user.userID" : updateParams.userID, [`user.${updateParams.direction}._id`] : new ObjectId(updateParams.messageID)
+                "userID" : updateParams.userID, [`${updateParams.direction}._id`] : new ObjectId(updateParams.messageID)
             },
-            {$set: {[`user.$[].${updateParams.direction}.$[xxx].${updateParams.field}`] : updateParams.update}},
+            {$set: {[`${updateParams.direction}.$[xxx].${updateParams.field}`] : updateParams.update}},
             {
                 multi: true,
                 strict: false,
