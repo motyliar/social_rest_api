@@ -38,11 +38,35 @@ class paginationMessageParams {
     }
 }
 
+function countMessages(userID, direction )  { return [
+    { $match: { "userID": userID } },
+ 
+    
+    { $unwind: `$${direction}` },
+    { $group: {_id: null, sendCount: { $sum: 1 } } }
+ ]}
+
+ function paginationQuery(paginationParams)  { 
+    return [
+    {$match: {"userID": paginationParams.userID}},
+    {$project: {
+        _id: 0, [`${paginationParams.direction}`]: 1
+    }},
+    {$unwind: `$${paginationParams.direction}`},
+    {$replaceRoot:
+    {newRoot: `$${paginationParams.direction}`}},
+    {$skip: (paginationParams.page - 1) * paginationParams.perPage}, {$limit: parseInt(paginationParams.perPage, 10)},
+]}
+
+ 
 
 
 
 
 
-module.exports = { messageTemplate, updateMessageParams, paginationMessageParams }
+
+
+
+module.exports = { messageTemplate, updateMessageParams, paginationMessageParams, countMessages, paginationQuery }
 
 

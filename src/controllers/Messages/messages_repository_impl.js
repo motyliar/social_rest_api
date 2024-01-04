@@ -4,6 +4,7 @@ const MessagesRepository = require('./messages_repository');
 const { ObjectId} = require('mongodb');
 const messageHelpers = require('./messages_helpers');
 const ServerMessage = require('../../core/servermessage');
+const { countMessages, paginationQuery } =require('./message_template');
 
 const ServerError = require('../../core/errors');
 
@@ -69,35 +70,27 @@ class MessageRepositoryImpl extends MessagesRepository {
         }
      } 
 
-     async getMessagesByPagination(userID,) {
-        const page = 1;
-        const perPage = 3;
-        const direction = 'received';
-        try {
-            const result = await Message.aggregate([
-                { $match: { userID: userID } },
-             
-                
-                { $unwind: "$send" },
-                { $group: {_id: null, sendCount: { $sum: 1 } } }
-            ]);
-            const pagination = await Message.aggregate([
-                {$match: {userID: userID}},
-                {$project: {
-                    _id: 0, send: 1
-                }},
-                {$unwind: "$send"},
-                {$replaceRoot:
-                {newRoot: "$send"}},
-                {$skip: 0}, {$limit: 1},
-            ]);
-            const totalPages = Math.ceil(result[0].sendCount / perPage);
+     async getMessagesByPagination(params) {
+        console.log(params);
         
-            return {totalDocuments : result[0].sendCount,
+        try {
+            const countTotalDocuments = await Message.aggregate(
+                countMessages(params.userID, params.direction)
+            );
+            const paginationOfMessages = await Message.aggregate(
+                paginationQuery(params)
+            );
+
+            //calculate total pages by countTotalDocuments from aggregate
+            const totalPages = Math.ceil(countTotalDocuments[0].sendCount / params.perPage);
+            if(totalPages === null || totalPages === 0) {
+                return null
+            } else
+            return {totalDocuments : countTotalDocuments[0].sendCount,
                     totalPages : totalPages,
-                    currentPage: page,
-                    item : perPage,
-                    data: pagination,
+                    currentPage: params.page,
+                    item : params.perPage,
+                    data: paginationOfMessages,
 
         } } 
         catch (error) {

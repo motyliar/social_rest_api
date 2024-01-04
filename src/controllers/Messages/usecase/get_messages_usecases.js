@@ -2,6 +2,7 @@ const MessageRepositoryImpl = require('../messages_repository_impl');
 const ServerMessage = require('../../../core/servermessage');
 const messageRepository = new MessageRepositoryImpl();
 const Message = require('../../../models/Message/message_model');
+const { paginationMessageParams } = require('../message_template');
 
 const SEND_DIRECTION = "send";
 
@@ -69,8 +70,11 @@ class GetMessagesUseCases {
  }
 
  async getMessagesByPagination(req,res) {
-    const userID = req.params.id;
-    const result = await messageRepository.getMessagesByPagination(userID);
+    const paginationParams = new paginationMessageParams(req.params.id, req.query.page, req.query.limit, req.query.direction ,);
+    
+    const result = await messageRepository.getMessagesByPagination( paginationParams );
+
+    
     res.status(200).json(result);
  }
 
