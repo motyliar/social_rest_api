@@ -14,16 +14,16 @@ class MessageHelpers {
       const data = await Promise.all(
          recipients.map(async recipient => {
             await Message.updateMany({
-               "user.userID": recipient
-            }, {$push: {"user.$.received": message}}, {new: true});
+               "userID": recipient
+            }, {$push: {"received": message}}, {new: true});
             return recipient;
             
          }));
          console.log(data);
          if(data.length === recipients.length) {
             await Message.findOneAndUpdate({
-               "user.userID" : userID
-            }, {$push: {"user.$.send" : message}}) 
+               "userID" : userID
+            }, {$push: {"send" : message}}) 
             return data;
 
       

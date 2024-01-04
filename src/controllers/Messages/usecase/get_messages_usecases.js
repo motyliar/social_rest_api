@@ -1,6 +1,7 @@
 const MessageRepositoryImpl = require('../messages_repository_impl');
 const ServerMessage = require('../../../core/servermessage');
 const messageRepository = new MessageRepositoryImpl();
+const Message = require('../../../models/Message/message_model');
 
 const SEND_DIRECTION = "send";
 
@@ -71,6 +72,16 @@ class GetMessagesUseCases {
     const userID = req.params.id;
     const result = await messageRepository.getMessagesByPagination(userID);
     res.status(200).json(result);
+ }
+
+ async getNewUser(req,res) {
+    await Message.createIndexes();
+    const userID = req.params.id;
+    const result = await Message.countDocuments({
+        'user.userID': userID, 
+       'user.userID.received': {$exists: true, $ne: null},
+    })
+    res.json(result);
  }
 
 

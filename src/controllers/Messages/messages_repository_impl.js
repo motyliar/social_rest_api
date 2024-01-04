@@ -37,8 +37,8 @@ class MessageRepositoryImpl extends MessagesRepository {
      async getUserMessages(userID, direction) {
         try {
             const result = await Message.findOne({
-                "fieldName" : "message", "user.userID" : userID},
-                 {[`user.${direction}.$`] : 1});
+                "userID" : userID},
+                 {[`${direction}`] : 1});
              if(result) {
                 return result;
                 
@@ -93,19 +93,12 @@ class MessageRepositoryImpl extends MessagesRepository {
         const perPage = 3;
         const direction = 'received';
         try {
+               
+        
 
             const result = await Message.aggregate([
                 {$match: {"user.userID": userID}},
-                // {$project: {
-                //     user: {
-                //         $filter: {
-                //             input: "$user", as: "u", cond: {$eq: ["$$u.userID", userID] 
-                //         }},
-                //     } 
-
-                // }},
-                {$unwind: "$user"},
-                
+                 {$unwind: "$user"},
                 {$unwind: "$user.received"},
                 { 
                     $match: { 
@@ -117,15 +110,31 @@ class MessageRepositoryImpl extends MessagesRepository {
                     $replaceRoot: {
                         newRoot: "$user.received"
                     }
-                },
-                // {$project: {
-                //     messages: "$user.received",
-                // }},
+                }, 
+                
+               
                 { $skip: (page - 1) * perPage },
                 { $limit: perPage },
                 
                 
             ]);
+            const total = await Message.aggregate([
+                {$match: {
+                    "user.userID": userID, "user.received.to": userID}},
+                { $unwind: '$user'},
+              {  $match: {
+                    "user.received.to": userID
+                }
+            },
+                {$unwind: '$user.received'},
+                {
+                    $group: {
+                        _id: null,
+                        totalCount: { $sum: 1 }
+                    }
+                }
+                
+            ])
             // const result = await Message.findOne({
             //     "user.userID": userID
             // }, {"user.received.$" : 1});
@@ -137,7 +146,7 @@ class MessageRepositoryImpl extends MessagesRepository {
             // if(result.user[0].received.length > 1) {
             //     return result.user[0].received.slice((page - 1) * perPage, page * perPage) }
                 
-               return result
+               return {"list": result, "totalCount": total}
         } catch (error) {
             return new ServerError(error.message);
         }
@@ -152,15 +161,15 @@ class MessageRepositoryImpl extends MessagesRepository {
      async sendNewMessageToOne(sender, recipient, message) {
         try {
             const userMessage = await Message.findOneAndUpdate({
-                "user.userID" : sender,  
+                "userID" : sender,  
             },
-            {$push: { "user.$.send" : message}},
+            {$push: { "send" : message}},
             {new: true}, 
             );
             const recipientMessage = await Message.findOneAndUpdate({
-                "user.userID" : recipient,
+                "userID" : recipient,
             },
-            {$push: { "user.$.received" : message}}, 
+            {$push: { "received" : message}}, 
             {new: true},
             );
             
