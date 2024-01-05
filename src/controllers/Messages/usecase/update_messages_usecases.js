@@ -7,6 +7,23 @@ const messageRepository = new MessageRepositoryImpl();
 
 class UpdateMessagesUseCases {
 
+
+    /**
+     * @function updateMessage one user message with requested field inside
+     * @param {String} userID user id to update
+     * @param {String} messageID message ObjectId to find message
+     * @param {String} direction param to find where message is to choose send/received
+     * @param {dynamic} update new value to update in field
+     * @param {String} field to change in message
+     * @return {Object} with message - success or fail
+     * @require request body in Object
+     *          {
+     *          "messageID" : ...
+     *          "direction" : ...
+     *          "update" : ... 
+     *          "field" : ...
+     *          }
+     */
     async updateMessage(req, res) {
         const updateParams = new updateMessageParams(
             req.params.id,

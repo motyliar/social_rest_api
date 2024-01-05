@@ -11,7 +11,23 @@ const RECEIVED_DIRECTION = "received";
 
 class PostMessagesUseCases {
 
-
+        /**
+         * @require Get Object in request.body for example : 
+         * {
+         *  "message" : {
+                "from" : "65969da407cb57515ddeb959",
+                "to" : "65969d8107cb57515ddeb952",
+                "sender" : "Jacol", 
+                "recipient": "Jacek",
+                "subject" : "kolejny temat",
+                "content" : "jak to sie stalo kolego" }
+         * }
+         *  @param {String} sender
+         *  @param {String} recipient
+         * @param {Object} message
+         * @param {Object} messageToSend 
+         * 
+         */
     async sendNewMessageToOne(req,res) {
         const sender = req.body.message.from
         const recipient = req.body.message.to;

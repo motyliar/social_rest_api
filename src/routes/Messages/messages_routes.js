@@ -16,7 +16,7 @@ const UpdateMessagesUseCases = require('../../controllers/Messages/usecase/updat
 // NEW IMPLEMENTATION
 
 router.get('/allMessages', GetMessagesUseCases.getAllMessages);
-router.get('/userMessages/:id', GetMessagesUseCases.getUserMessages);
+router.post('/userMessages/:id', GetMessagesUseCases.getUserMessages);
 router.get('/singleMessage/:id', GetMessagesUseCases.getSingleMessage);
 router.get('/pagination/:id', GetMessagesUseCases.getMessagesByPagination);
 router.get('/index/:id', GetMessagesUseCases.getNewUser);

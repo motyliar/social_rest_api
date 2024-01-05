@@ -16,7 +16,7 @@ class DeleteMessagesUseCases {
         const userID = req.params.id;
         const direction = req.body.direction;
         const idToDelete = req.body.delete;
-
+        console.log(req.body);
         try {
             const result = await messageRepository.deleteMessage(userID, direction, idToDelete);
 

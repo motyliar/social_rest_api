@@ -39,13 +39,7 @@ class MessageHelpers {
    
 }
 
-function countMessages(userID, direction )  { return [
-   { $match: { "userID": userID } },
 
-   
-   { $unwind: `$${direction}` },
-   { $group: {_id: null, sendCount: { $sum: 1 } } }
-]}
 
 
 
