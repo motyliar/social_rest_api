@@ -35,9 +35,9 @@ class UpdateMessagesUseCases {
     try {
         const result = await messageRepository.updateSingleMessage(updateParams);
         if(result.message === ServerMessage.success) {
-            res.status(200).json(result)
+            res.status(200).json({status: ServerMessage.success})
         } else {
-            res.status(404).json(result);
+            res.status(404).json({status: ServerMessage.notFound});
         }
     } catch(error) {
         res.status(500).json({error: error.message});

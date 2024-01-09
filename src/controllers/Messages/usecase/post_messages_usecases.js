@@ -33,13 +33,13 @@ class PostMessagesUseCases {
         const recipient = req.body.message.to;
         const message = req.body.message;
         const messageToSend = messageTemplate(message.to, message.from, message.sender, message.recipient, message.subject, message.content,);
-
+        console.log(message);
         try {
             const result = await messageRepository.sendNewMessageToOne(sender, recipient, messageToSend);
             if(result) {
-                res.status(200).json(result)
+                res.status(200).json({status: ServerMessage.success});
             } else {
-                res.status(404).json({message: ServerMessage.notFound});
+                res.status(404).json({status: ServerMessage.notFound});
             }
 
         } catch(error) {
