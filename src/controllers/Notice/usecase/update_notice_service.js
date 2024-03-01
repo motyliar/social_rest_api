@@ -13,7 +13,7 @@ class UpdateNoticeService {
         const { id } = req.params;
         const field = req.body.field;
         const content = req.body.content;
-
+        console.log(req.body);
         try {
             const data = await noticeRepository.updateNoticeContent(id, field, content);
 

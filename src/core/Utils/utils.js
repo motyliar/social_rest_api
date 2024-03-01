@@ -26,7 +26,7 @@ class Utils {
         const currentYear = date.getFullYear();
         const currentMonth = this._addSingleNumberZero(date.getMonth() +ONE_MONTH);
         const currentDay = this._addSingleNumberZero(date.getDate());
-        const currentDate = `${currentYear}.${currentMonth}.${currentDay}`;
+        const currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
         return currentDate;
     }
 

@@ -35,6 +35,7 @@ app.use((err, req, res, next) => {
      status: 'error',
      message: 'Something went wrong on the server.'
    });
+   next()
  });
 
 

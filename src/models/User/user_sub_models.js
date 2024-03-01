@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Utils = require('../../core/Utils/utils')
 
 const { Schema } = mongoose;
 
@@ -64,7 +65,7 @@ const detailsSchema = Schema({
 
 const activeSchema = Schema({
     isActive: {type: Boolean, default: false, required: true},
-    lastLoggedIn: {type: String, default: '0000 00 00', required: true}
+    lastLoggedIn: {type: String, default: () => Utils.getData(), required: true}
 })
 
 

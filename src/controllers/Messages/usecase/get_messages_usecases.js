@@ -3,6 +3,7 @@ const ServerMessage = require('../../../core/servermessage');
 const messageRepository = new MessageRepositoryImpl();
 const Message = require('../../../models/Message/message_model');
 const { paginationMessageParams } = require('../message_template');
+const User = require('../../../models/User/user_model');
 
 const SEND_DIRECTION = "send";
 
@@ -25,6 +26,17 @@ class GetMessagesUseCases {
   * @param {String} direction (send or received) to pass in req.query.direction, when direction 
   * if null, then will show send messages array
   */
+
+ getIdsToList =(messages) =>
+    messages.map((value) => value.from);   
+
+async addProfileAvatar(listOfIds) {
+return await Promise.all(listOfIds.map(async (value) => {
+   const user = await User.findById(value);
+   return {"id" : user.id, "profileAvatar" : user.profileAvatar};
+}));
+
+}
  async getUserMessages(req, res) {
     const userID = req.params.id;
     const direction = req.body.direction || SEND_DIRECTION;
@@ -33,7 +45,19 @@ class GetMessagesUseCases {
             const result = await messageRepository.getUserMessages(userID, direction);
 
             if(result){
-                res.status(200).json(result);
+               
+               const listOFMessages = result.send;
+               const idsSet = new Set();
+               listOFMessages.map((value) => {idsSet.add(value.from)});
+                  console.log(idsSet);
+                  const ids = [...idsSet];
+               const avatars = await Promise.all(ids.map(async (value) => {
+                  const user = await User.findById(value);
+                  return {"id" : user.id, "profileAvatar" : user.profileAvatar};
+               }));
+
+
+                res.status(200).json({messages: result, avatars: avatars});
 
             } else {
                 res.status(404).json({message: ServerMessage.notFound});
@@ -42,7 +66,10 @@ class GetMessagesUseCases {
             res.status(500).json({error: error.message});
 
  } 
+
+ 
  }
+  
  /**
   * 
   * @param {String} userID req.params.id pass userID who is author or recipient of message 

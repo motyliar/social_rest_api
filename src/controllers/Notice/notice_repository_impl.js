@@ -71,14 +71,31 @@ class NoticeRepositoryImpl extends NoticeRepository {
         }
     }
 
-    async findNoticeCreatedByUser(userId) {
-        try {
-            const data = await Notice.where("authorId").equals(userId);
-            if(data) {
-                return data;
+    #userExist = async (userId) => {
+        
+        const data = await Notice.exists({"authorId" : userId});
+           console.log('to jest'+ data);
+           if(data === null) {
+            throw new ServerError('no-data');
+           }
+            else {  return data;
+               
             }
+        
+    }
+    async findNoticeCreatedByUser(userId)  {
+
+        try {
+            const user = await this.#userExist(userId);
+            console.log(user);
+            if(user) {
+            const data = await Notice.find().where("authorId").equals(userId);
+            if(data.length > 0) {
+                return data;
+            } else {throw new ServerError('no-messages')}
+        } 
         } catch(error) {
-            Utils.errorSwitch(data);
+            throw new ServerError(error.message);
         }
     }
     /**
@@ -99,7 +116,7 @@ class NoticeRepositoryImpl extends NoticeRepository {
 
         const data = await Notice.updateOne({"_id": id}, {$push: {"comments" : comment}, $set: {"updatedAt": Utils.getData()}});
         if(data) {
-            return data;
+            return {data: data, status: ServerMessage.success};
         } else {
             return null;
         }
@@ -155,8 +172,9 @@ class NoticeRepositoryImpl extends NoticeRepository {
       try {
         const data = await Notice.updateOne(
             {"_id": noticeId,}, 
-            {$set: {[`content.${field}`]: content }, "updatedAt": Utils.getData()}
+            {$set: {[`${field}`]: content }, "updatedAt": Utils.getData()}
             );
+            console.log(data.modifiedCount);
             if(data.modifiedCount > 0) {
                 return {"status": ServerMessage.success}
             } else {
@@ -177,7 +195,7 @@ class NoticeRepositoryImpl extends NoticeRepository {
             "updatedAt": Utils.getData()}
             );
             if(data) {
-                return data;
+                return {data: data, status: ServerMessage.success};
 
             } else {
                 return null;

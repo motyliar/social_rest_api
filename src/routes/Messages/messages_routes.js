@@ -21,6 +21,7 @@ router.get('/singleMessage/:id', GetMessagesUseCases.getSingleMessage);
 router.get('/pagination/:id', GetMessagesUseCases.getMessagesByPagination);
 router.get('/index/:id', GetMessagesUseCases.getNewUser);
 
+
 router.post('/add/single/', PostMessagesUseCases.sendNewMessageToOne);
 router.post('/add/many/', PostMessagesUseCases.sendNewMessageToMany);
 router.post('/admin/newfield/', PostMessagesUseCases.createMessageTable);

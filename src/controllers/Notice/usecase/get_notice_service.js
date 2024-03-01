@@ -41,7 +41,7 @@ class GetNoticeServices {
         if(data.message === ServerMessage.fail) {
             res.status(404).json(data.message);
          } else {
-            res.status(200).json(data);
+            res.status(200).json(data.data);
          }
      } catch (error) {
         res.status(500).json({error: error.message});
@@ -75,7 +75,8 @@ class GetNoticeServices {
 
         try {
             const data = await noticeRepository.findNoticeCreatedByUser(id);
-        utils.responseData(res, data, data);
+            if(data) {
+        utils.responseData(res, data, data)};
         } catch( error) {
             res.status(500).json({error: error});
         }

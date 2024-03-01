@@ -19,7 +19,7 @@ router.get('/pagination/field', getNoticeServices.paginationNoticesByFieldName);
  * @POST
  */
 
-router.post('/new', postNoticeService.createNotice);
+router.post('/add', postNoticeService.createNotice);
 router.post('/comment/:id', postNoticeService.addComment);
 /**
  * @DELETE
@@ -32,7 +32,7 @@ router.delete('/comment/delete/:id', deleteNoticeServices.deleteSingleComment);
 /**
  * @UPDATE
  */
-router.put('/notice/update/:id', updateNoticeService.updateNoticeContent);
+router.put('/single/update/:id', updateNoticeService.updateNoticeContent);
 router.put('/comment/update/:id', updateNoticeService.updateOneComment);
 
 

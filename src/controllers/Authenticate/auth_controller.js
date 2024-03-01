@@ -21,6 +21,7 @@ const userRegister = async (req, res, next) => {
             userAuthID: hashedPass,
             userName: req.body.userName,
             userEmail: req.body.userEmail,
+          
 
         });
 
@@ -37,6 +38,7 @@ const userRegister = async (req, res, next) => {
             "userEmail": req.body.userEmail,
             "send": [],
             "received": [],
+
         });
                 const send = await Message.create(tableUser);
                 
