@@ -1,6 +1,7 @@
 const MessageRepositoryImpl = require('../messages_repository_impl');
 const ServerMessage = require('../../../core/servermessage');
 const messageRepository = new MessageRepositoryImpl();
+const MessageHelpers = require('../messages_helpers');
 const Message = require('../../../models/Message/message_model');
 const { paginationMessageParams } = require('../message_template');
 const User = require('../../../models/User/user_model');
@@ -40,32 +41,23 @@ return await Promise.all(listOfIds.map(async (value) => {
  async getUserMessages(req, res) {
     const userID = req.params.id;
     const direction = req.body.direction || SEND_DIRECTION;
-
+    var result;
+     
         try {
-            const result = await messageRepository.getUserMessages(userID, direction);
-
-            if(result){
-               
-               const listOFMessages = result.send;
-               const idsSet = new Set();
-               listOFMessages.map((value) => {idsSet.add(value.from)});
-                  console.log(idsSet);
-                  const ids = [...idsSet];
-               const avatars = await Promise.all(ids.map(async (value) => {
-                  const user = await User.findById(value);
-                  return {"id" : user.id, "profileAvatar" : user.profileAvatar};
-               }));
-
-
-                res.status(200).json({messages: result, avatars: avatars});
-
-            } else {
-                res.status(404).json({message: ServerMessage.notFound});
+             result = await messageRepository.getUserMessages(userID, direction)  
+          
+             if(result){
+               const avatars = await MessageHelpers.convertData(result, direction);
+               result[direction][0].avatars = avatars;
+               res.status(200).json(result);
+             }
             }
-        } catch(error) {
-            res.status(500).json({error: error.message});
-
+         catch(error) {
+            console.log(error)
+          res.status(500).json(error)         
  } 
+   
+   
 
  
  }
