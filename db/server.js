@@ -5,18 +5,25 @@ const mongoose = require('mongoose');
 const app = express();
 const helmet = require('helmet');
 const compression = require('compression');
-
+app.use(express.urlencoded({ extended: true }));
 const userRouter = require('../src/routes/User/user_routes');
 const connectionRouter = require('../src/routes/Connection/connection_routes');
 const authRouter = require('../src/routes/User/auth');
 const messagesRouter = require('../src/routes/Messages/messages_routes');
 const noticeRouter = require('../src/routes/Notice/notice_router');
+const uploadRouter = require('../src/routes/Uploader/uploader_routes')
 
 const PORT = process.env.PORT || 3000;
 const URL = process.env.URL;
 const USERROUTECODE = process.env.USERROUTECODE;
 
+const path = require('path');
 
+// Ścieżka do folderu, w którym przechowujesz obrazy
+const imagesPath = path.join(__dirname, '..', 'images');
+
+// Ustawienie folderu 'images' jako statycznej ścieżki
+app.use('/images', express.static(imagesPath));
 
 app.use(helmet());
 app.use(compression());
@@ -27,6 +34,7 @@ app.use((req, res, next) => {
  });
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+
 
 app.use((err, req, res, next) => {
    console.error(err.stack);
@@ -41,12 +49,13 @@ app.use((err, req, res, next) => {
 
 
 
-
+ 
 app.use('/', authRouter);
 app.use(`${USERROUTECODE}/climbuser`, userRouter);
 app.use('/connection', connectionRouter);
 app.use('/message',messagesRouter);
 app.use('/notice', noticeRouter);
+app.use('/up', uploadRouter);
 
 
 
