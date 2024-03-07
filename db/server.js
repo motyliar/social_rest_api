@@ -20,10 +20,10 @@ const USERROUTECODE = process.env.USERROUTECODE;
 const path = require('path');
 
 // Ścieżka do folderu, w którym przechowujesz obrazy
-const imagesPath = path.join(__dirname, '..', 'images');
+const imagesPath = path.join(__dirname, '..', 'avatars');
 
 // Ustawienie folderu 'images' jako statycznej ścieżki
-app.use('/images', express.static(imagesPath));
+app.use('/avatars/', express.static(imagesPath));
 
 app.use(helmet());
 app.use(compression());
