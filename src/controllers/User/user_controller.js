@@ -52,11 +52,11 @@ class UserAction {
     }
 
     async updateUser (req, res) {
-<<<<<<< HEAD
+
         console.log(req.body);
-=======
-      console.log(req.body); 
->>>>>>> ac977fb (temp)
+
+ 
+
         try {
             const { id } = req.params
             const user = await User.findByIdAndUpdate(id, req.body);
