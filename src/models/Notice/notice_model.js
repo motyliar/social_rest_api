@@ -10,6 +10,7 @@ const noticeSchema = Schema({
     author: {type: String, required: true},
     authorId: {type: String, required: true},
     category: {type: String, required: true},
+    type: {type: String, required: true},
     content: {type: contentSchema, required: true},
     comments: {type: [commentsSchema], default: [], required: false,},
     createdAt: {type: String, default: () => Utils.getData(), required: true},
