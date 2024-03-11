@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   const timestamp = Date.now();
   const dateNow = new Date(timestamp)
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-   console.log(`Data: ${dateNow} Method: ${req.method} URL: ${req.url}`);
+   console.log(`Data: ${dateNow.toLocaleString()}\n Method: ${req.method} URL: ${req.url}`);
    next();
  });
 app.use(express.json());
