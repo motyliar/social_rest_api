@@ -27,7 +27,7 @@ const upload = multer({ storage: storage });
 uploadRouter.post('/upload', upload.single('image'), async function(req,res)  {
 const file = req.file.filename
 if(file) {
-   const userUpdate = await User.findByIdAndUpdate(req.query.file, {'profileAvatar': `http://192.168.1.41:3000/avatars/${file}`})
+   const userUpdate = await User.findByIdAndUpdate(req.query.file, {'profileAvatar': `http://65.21.202.169:20119/avatars/${file}`})
    if(userUpdate) {
     res.status(200).json({file: file});
    } else { res.status(404).json({message: 'cant find user'})}
