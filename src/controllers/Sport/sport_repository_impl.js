@@ -38,8 +38,8 @@ class SportRepositoryImpl extends SportRepository{
     }
 
     async getSingleUser(userId) {
-        const user = await Sport.find({"userId" : userId});
-        if(user.length > 0) {
+        const user = await Sport.findOne({"userId" : userId});
+        if(user) {
             return user;
         } else {
         const newUser = new Sport({"userId" : userId})
@@ -51,7 +51,11 @@ class SportRepositoryImpl extends SportRepository{
     async getSimilarUsers(sportName, value) {
     
        
-        const users = await Sport.find({[sportName] : {$gt: value}});
+        const users = await Sport.find({ 
+            $and: [
+                {[sportName] : {$gt: value}},
+                {"padel" : {$gt: 0}},
+                ]},);
         if(users) {
             return users;
         } else {
