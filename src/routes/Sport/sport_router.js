@@ -8,6 +8,8 @@ const router = express.Router();
 
 
 router.get('/get', GetSportUseCase.getUsers);
+router.get('/getSingle/:id', GetSportUseCase.getSingleUser);
+router.get('/similar/:sport/:value?', GetSportUseCase.getSimilarUsers);
 router.post('/update', PostSportUseCase.createUser);
 
 

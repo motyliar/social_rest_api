@@ -36,6 +36,28 @@ class SportRepositoryImpl extends SportRepository{
             throw new ServerError(ServerMessage.fail);
         }
     }
+
+    async getSingleUser(userId) {
+        const user = await Sport.find({"userId" : userId});
+        if(user.length > 0) {
+            return user;
+        } else {
+        const newUser = new Sport({"userId" : userId})
+           const createUser = await this.createNewSportUser(newUser);
+           return createUser;
+        }
+    }
+
+    async getSimilarUsers(sportName, value) {
+    
+       
+        const users = await Sport.find({[sportName] : {$gt: value}});
+        if(users) {
+            return users;
+        } else {
+            throw ServerError(ServerMessage.fail);
+        }
+    }
 }
 
 

@@ -13,6 +13,14 @@ class SportRepository {
     async getAllUsers() {
       throw new ServerError("This method should be overridden in subclasses");
     }
+
+    async getSingleUser() {
+      throw new ServerError("This method should be overridden in subclasses");
+    }
+
+    async getSimilarUsers() {
+      throw new ServerError("This method should be overridden in subclasses");
+    }
 }
 
 
