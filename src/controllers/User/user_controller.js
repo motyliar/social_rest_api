@@ -53,6 +53,10 @@ class UserAction {
 
     async updateUser (req, res) {
 
+
+
+ 
+
         try {
             const { id } = req.params
             const user = await User.findByIdAndUpdate(id, req.body);
@@ -61,7 +65,7 @@ class UserAction {
             } else  {
             const newUser = await User.findById(id);
             
-            res.status(201).json(newUser)}
+            res.status(200).json(newUser)}
         } catch(error) {
             res.status(500).json({message: error.message})
         }
