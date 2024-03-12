@@ -52,11 +52,6 @@ class UserAction {
     }
 
     async updateUser (req, res) {
-
-
-
- 
-
         try {
             const { id } = req.params
             const user = await User.findByIdAndUpdate(id, req.body);
