@@ -15,14 +15,23 @@ class SportRepositoryImpl extends SportRepository{
         if (user) {
             return user
         } else {
-            throw new ServerError(ServerMessage.fail)
+            throw new ServerError(ServerMessage.wrong)
         }
     }
 
     async updateUserSports(userSports) {
-        const update = await SportFindOneAndUpdate({"userId" : userSports.userId}, userSports);
+        const update = await Sport.findOneAndUpdate({"userId" : userSports.userId}, userSports);
         if(update) {
             return update
+        } else {
+            throw new ServerError(ServerMessage.fail);
+        }
+    }
+
+    async getAllUsers() {
+        const users = await Sport.find({});
+        if(users) {
+            return users;
         } else {
             throw new ServerError(ServerMessage.fail);
         }

@@ -4,6 +4,7 @@ class ServerMessage {
     static notFound = "not-found"
     static success = 'success'
     static changeSuccess = 'change-success'
+    static updateSuccess = 'update-success'
     static fail = 'change-failed'
     static delete = 'delete'
     static params = 'wrong-params'

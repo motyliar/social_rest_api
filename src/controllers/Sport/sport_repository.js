@@ -9,6 +9,10 @@ class SportRepository {
     async updateSports() {
       throw new ServerError("This method should be overridden in subclasses");
     }
+
+    async getAllUsers() {
+      throw new ServerError("This method should be overridden in subclasses");
+    }
 }
 
 

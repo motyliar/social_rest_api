@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose.Schema();
+const { Schema } = mongoose;
 
-const sportModel = Schema({
+const sportSchema = new Schema({
     userId: {type: String, required: true, unique: true},
     football: {type: Number, default: 0,},
     padel: {type: Number, default: 0,},

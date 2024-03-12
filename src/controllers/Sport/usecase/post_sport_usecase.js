@@ -9,8 +9,9 @@ class PostSportUseCase {
         const sportUser = new Sport(req.body.sport);
         const userId = req.body.sport.userId;
         const user = await Sport.find({"userId": userId});
+        
 
-        if(!user) {
+        if(user.length === 0) {
             try {
                 await sportRepository.createNewSportUser(sportUser);
                 res.status(200).json({message: ServerMessage.success})
@@ -18,7 +19,7 @@ class PostSportUseCase {
                 res.status(500).json({message: e.message})};
         } else {
             try {
-                await sportRepository.updateUserSports(sportUser);
+                await sportRepository.updateUserSports(req.body.sport);
                 res.status(200).json({message: ServerMessage.updateSuccess});
             } catch (e) {
                 res.status(500).json({message: e.message});
@@ -27,3 +28,5 @@ class PostSportUseCase {
 
     }
 }
+
+module.exports = new PostSportUseCase();
