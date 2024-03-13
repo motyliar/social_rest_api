@@ -26,7 +26,7 @@ const imagesPath = path.join(__dirname,'..', 'app_images');
 
 
 app.use('/avatars/', express.static(avatarsPath));
-app.use('app_images/', express.static(imagesPath));
+app.use('/app_images/', express.static(imagesPath));
 
 app.use(helmet());
 app.use(compression());
