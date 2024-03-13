@@ -19,8 +19,9 @@ class SportRepositoryImpl extends SportRepository{
         }
     }
 
-    async updateUserSports(userSports) {
-        const update = await Sport.findOneAndUpdate({"userId" : userSports.userId}, userSports);
+    async updateUserSports(userSports, id) {
+        console.log(userSports);
+        const update = await Sport.findOneAndUpdate({"userId" : id}, userSports);
         if(update) {
             return update
         } else {

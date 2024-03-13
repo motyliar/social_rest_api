@@ -7,7 +7,7 @@ class PostSportUseCase {
 
     async createUser(req, res) {
         const sportUser = new Sport(req.body.sport);
-        const userId = req.body.sport.userId;
+        const userId = req.params.id;
         const user = await Sport.find({"userId": userId});
         
 
@@ -19,7 +19,7 @@ class PostSportUseCase {
                 res.status(500).json({message: e.message})};
         } else {
             try {
-                await sportRepository.updateUserSports(req.body.sport);
+                await sportRepository.updateUserSports(req.body, userId);
                 res.status(200).json({message: ServerMessage.updateSuccess});
             } catch (e) {
                 res.status(500).json({message: e.message});
