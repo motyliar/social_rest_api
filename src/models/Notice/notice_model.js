@@ -9,10 +9,13 @@ const noticeSchema = Schema({
     _id: {type: mongoose.Schema.Types.ObjectId, auto: true, required:true},
     author: {type: String, required: true},
     authorId: {type: String, required: true},
+    avatar: {type: String, required: true},
     category: {type: String, required: true},
     type: {type: String, required: true},
     content: {type: contentSchema, required: true},
     comments: {type: [commentsSchema], default: [], required: false,},
+    requests: {type: [String], default: []},
+    interested: {type: [String], default: [] },
     createdAt: {type: String, default: () => Utils.getData(), required: true},
     updatedAt: {type: String, default: () => Utils.getData(), required: true},
 });
