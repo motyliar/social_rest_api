@@ -8,6 +8,7 @@ const contentSchema = Schema({
     _id: {type: mongoose.Schema.Types.ObjectId, auto: true, required: true},
     title: {type: String, required: true},
     content: {type: String, required: true},
+    when: {type: String, required: false},
     price: {type: Number, required: false},
 
 });

@@ -16,6 +16,8 @@ const noticeSchema = Schema({
     comments: {type: [commentsSchema], default: [], required: false,},
     requests: {type: [String], default: []},
     interested: {type: [String], default: [] },
+    image: {type: String, required: false},
+    isActive: {type: Boolean, default: true},
     createdAt: {type: String, default: () => Utils.getData(), required: true},
     updatedAt: {type: String, default: () => Utils.getData(), required: true},
 });
