@@ -73,12 +73,10 @@ app.use('/sports', sportRouter);
 
 
 mongoose.connect(URL).then(() => {
-    //  app.listen(PORT, () => {
-    //     console.log(`Server on ${PORT}`);
-    // });
-    https.createServer(options, app).listen(PORT, () => {
-      console.log(`Server on ${PORT}`)
-    })
+     app.listen(PORT, () => {
+        console.log(`Server on ${PORT}`);
+    });
+  
     console.log(`MONGO DB Connect`)}).catch((error) => { console.log(`Connected error: ${error}`);
         
     });
