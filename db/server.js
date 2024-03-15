@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const app = express();
 const helmet = require('helmet');
@@ -24,9 +26,13 @@ const path = require('path');
 const avatarsPath = path.join(__dirname, '..', 'avatars');
 const imagesPath = path.join(__dirname,'..', 'app_images');
 
+const options = {
+  key: fs.readFileSync(path.join(__dirname, 'cert-key.pem')),
+  cert: fs.readFileSync(path.join(__dirname,'fullchain.pem')),
+}
 
-app.use('/avatars/', express.static(avatarsPath));
-app.use('/app_images/', express.static(imagesPath));
+
+
 
 app.use(helmet());
 app.use(compression());
@@ -54,7 +60,8 @@ app.use((err, req, res, next) => {
 
 
 
- 
+ app.use('/avatars/', express.static(avatarsPath));
+ app.use('/app_images/', express.static(imagesPath));
 app.use('/', authRouter);
 app.use(`${USERROUTECODE}/climbuser`, userRouter);
 app.use('/connection', connectionRouter);
@@ -64,10 +71,14 @@ app.use('/up', uploadRouter);
 app.use('/sports', sportRouter);
 
 
+
 mongoose.connect(URL).then(() => {
-     app.listen(PORT, () => {
-        console.log(`Server on ${PORT}`);
-    });
+    //  app.listen(PORT, () => {
+    //     console.log(`Server on ${PORT}`);
+    // });
+    https.createServer(options, app).listen(PORT, () => {
+      console.log(`Server on ${PORT}`)
+    })
     console.log(`MONGO DB Connect`)}).catch((error) => { console.log(`Connected error: ${error}`);
         
     });
