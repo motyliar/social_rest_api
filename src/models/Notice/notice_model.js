@@ -12,6 +12,7 @@ const noticeSchema = Schema({
     avatar: {type: String, required: true},
     category: {type: String, required: true},
     type: {type: String, required: true},
+    localization: {type: String, required: false},
     content: {type: contentSchema, required: true},
     comments: {type: [commentsSchema], default: [], required: false,},
     requests: {type: [String], default: []},
