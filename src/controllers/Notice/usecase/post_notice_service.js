@@ -33,6 +33,18 @@ class PostNoticeService {
         res.status(500).json({error: error});    
     } 
     }
+
+    async userLikeJoining(req, res) {
+        const body = req.body;
+        try {
+            const data = await noticeRepository.userLikeJoining(body);
+            if(data) {
+                res.status(200).json(data);
+            }
+        } catch (e) {
+            res.status(500).json({message: e.message});
+        }
+    }
 }
 
 module.exports = new PostNoticeService();

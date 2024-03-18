@@ -201,6 +201,25 @@ class NoticeRepositoryImpl extends NoticeRepository {
                 return null;
             }
     }
+
+    async userLikeJoining(body) {
+        const data = await Notice.findById(id);
+        if(data) {
+            if(body.where === 'request') {
+                data.requests.push(body.userId);
+                data.save();
+                return ServerMessage.success;
+            }
+            if(body.where === 'interested') {
+                data.interested.push(body.userId);
+                data.save();
+                return ServerMessage.success;
+            }
+            
+        } else {
+            throw new ServerError('not-found');
+        }
+    }
 }
 
 
