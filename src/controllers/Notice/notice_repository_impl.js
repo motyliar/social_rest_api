@@ -203,7 +203,8 @@ class NoticeRepositoryImpl extends NoticeRepository {
     }
 
     async userLikeJoining(body) {
-        const data = await Notice.findById(id);
+        console.log(body);
+        const data = await Notice.findById(body.id);
         if(data) {
             if(body.where === 'request') {
                 data.requests.push(body.userId);
@@ -216,6 +217,30 @@ class NoticeRepositoryImpl extends NoticeRepository {
                 return ServerMessage.success;
             }
             
+        } else {
+            throw new ServerError('not-found');
+        }
+    }
+
+    async userUnlikeJoining(body) {
+        console.log(body);
+        const data = await Notice.findById(body.id);
+        if (data) {
+            if (body.where === 'request') {
+                const index = data.requests.indexOf(body.userId);
+                if (index !== -1) {
+                    data.requests.splice(index, 1);
+                    await data.save();
+                    return ServerMessage.success;
+                }
+            } else if (body.where === 'interested') {
+                const index = data.interested.indexOf(body.userId);
+                if (index !== -1) {
+                    data.interested.splice(index, 1);
+                    await data.save();
+                    return ServerMessage.success;
+                }
+            }
         } else {
             throw new ServerError('not-found');
         }

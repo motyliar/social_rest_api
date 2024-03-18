@@ -93,6 +93,14 @@ async getNotices() {
         throw new ServerError("This method should be overridden in subclasses");
 
     }
+
+    async userLikeJoining() {
+        throw new ServerError("This methos should be overriden in subclasses");
+    }
+
+    async userUnlikeJoining() {
+        throw new ServerError("This methos should be overriden in subclasses");
+    }
 }
 
 

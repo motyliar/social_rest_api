@@ -22,6 +22,7 @@ router.get('/pagination/field', getNoticeServices.paginationNoticesByFieldName);
 router.post('/add', postNoticeService.createNotice);
 router.post('/comment/:id', postNoticeService.addComment);
 router.post('/join', postNoticeService.userLikeJoining);
+router.post('/unjoin', postNoticeService.userUnlikeJoining);
 /**
  * @DELETE
  */
