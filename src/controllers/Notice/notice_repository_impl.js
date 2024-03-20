@@ -56,6 +56,15 @@ class NoticeRepositoryImpl extends NoticeRepository {
         }
     }
 
+    async getSortNoticesPagination(page, pageLimit) {
+        
+        const data = await Notice.find({}).sort({"createdAt": -1}).skip(page).limit(pageLimit);
+        if(data) {
+            return data;
+            
+        } else {throw new ServerError('no-data');}
+    }
+
     async paginationNoticesByFieldName(page, pageSize, fieldParrent, fieldChild) {
        
             const data = await Notice.where(fieldParrent).equals(fieldChild);

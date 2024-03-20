@@ -28,7 +28,25 @@ class GetNoticeServices {
 
    }
 
+   async sortNotices(req, res) {
+        const page = req.query.page;
+        const pageLimit = req.query.pageSize;
+        const skip = (page -1) * pageLimit;
+
+        try {
+            const notices = await noticeRepository.getSortNoticesPagination(skip, pageLimit);
+            if(notices) {
+                res.status(200).json(notices);
+            }
+        } catch (e) {
+             res.status(500).json({message: e.message});}
+
+   }
+    /**
+     * @deprecated
+     */
    async getNoticesByPagination( req, res) {
+    console.warn('This function is depracated');
      const page = req.query.page;
      const pageSize = req.query.pageSize;
      let data;
