@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/all', getNoticeServices.getNotices);
 router.get('/single/:id', getNoticeServices.getSingleNotice);
 router.get('/author/:id', getNoticeServices.findNoticeCreatedByUser);
-router.get('/pagination/notice', getNoticeServices.getNoticesByPagination);
+router.get('/pagination/notice', getNoticeServices.sortNotices);
 router.get('/pagination/field', getNoticeServices.paginationNoticesByFieldName);
 router.get('/sort', getNoticeServices.sortNotices);
 /**
