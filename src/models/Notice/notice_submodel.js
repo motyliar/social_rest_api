@@ -21,6 +21,7 @@ const commentsSchema = Schema({
     userId: {type: String, required:true},
     content: {type: String, required: true},
     likes: {type: Number, default: 0, required: true},
+    avatar: {type: String, required: false},
     createdAt: {type: String, default: () => Utils.getData(), required: true},
     updatedAt: {type: String, default: () => Utils.getData(), required: true},
 
