@@ -254,6 +254,35 @@ class NoticeRepositoryImpl extends NoticeRepository {
             throw new ServerError('not-found');
         }
     }
+
+    async filterNotice(value, category) {
+        console.log(category);
+       const data = await Notice.find({ [category]: {$regex: value, $options: 'i'}});
+        if(data) {
+            return data;
+        } else {
+            throw new ServerError(ServerMessage.notFound);
+        }
+    }
+
+    async filterAllFields(value) {
+        const fieldsToSearch = ['author', 'category', 'content.title',];
+        const queries = fieldsToSearch.map(field => {
+            const queryObject = {};
+            queryObject[field] = {$regex: value, $options: 'i'};
+            return queryObject;
+
+        });
+        
+        
+        const data = Notice.find({$or: queries});
+        if(data) {
+            return data;
+        
+    } else {
+        throw new ServerError(ServerMessage.notFound)
+    }
+}
 }
 
 

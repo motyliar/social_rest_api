@@ -40,6 +40,14 @@ async getNotices() {
     async paginationNoticesByFieldName(page, pageSize, category) {
         throw new ServerError("This method should be overridden in subclasses");
     } 
+
+    async filterAllFields() {
+        throw new ServerError("This method should be overridden in subclasses");
+    }
+
+    async filterNotice() {
+        throw new ServerError("This method should be overridden in subclasses");
+    }
     /**
      * Add comment to Notice
      * @POST

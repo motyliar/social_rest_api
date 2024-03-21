@@ -99,6 +99,25 @@ class GetNoticeServices {
             res.status(500).json({error: error});
         }
    }
+
+   async filterNotices(req,res) {
+    const category = req.query.category;
+     try {
+        const data = await noticeRepository.filterNotice(req.query.word, category);
+        res.status(200).json(data)
+     }catch (e) {
+        res.status(500).json({message: e.message});
+       }
+
+   } 
+   async filterAllNotices(req, res) {
+    try {
+        const data = await noticeRepository.filterAllFields(req.query.word);
+        res.status(200).json(data);
+    } catch (e) {
+        res.status(500).json({message: e.message});
+    }
+   }
 }
 
 

@@ -15,6 +15,8 @@ router.get('/single/:id', getNoticeServices.getSingleNotice);
 router.get('/author/:id', getNoticeServices.findNoticeCreatedByUser);
 router.get('/pagination/notice', getNoticeServices.sortNotices);
 router.get('/pagination/field', getNoticeServices.paginationNoticesByFieldName);
+router.get('/filter', getNoticeServices.filterNotices);
+router.get('/filterAll', getNoticeServices.filterAllNotices);
 router.get('/sort', getNoticeServices.sortNotices);
 /**
  * @POST
