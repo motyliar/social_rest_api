@@ -11,6 +11,7 @@ class PostNoticeService {
 
     async createNotice(req, res) {
         const notice = new Notice(req.body.notice);
+        console.log(req.body);
 
         try {
             const data = await noticeRepository.createNotice(notice);
