@@ -21,3 +21,5 @@ class AddNotificationUseCase {
                 );}
     }
 }
+
+module.exports = new AddNotificationUseCase();

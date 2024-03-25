@@ -15,6 +15,7 @@ const messagesRouter = require('../src/routes/Messages/messages_routes');
 const noticeRouter = require('../src/routes/Notice/notice_router');
 const uploadRouter = require('../src/routes/Uploader/uploader_routes')
 const sportRouter = require('../src/routes/Sport/sport_router');
+const notificationRouter = require('../src/routes/Notifications/notification_router');
 
 const PORT = process.env.PORT || 3000;
 const URL = process.env.URL;
@@ -69,6 +70,7 @@ app.use('/message',messagesRouter);
 app.use('/notice', noticeRouter);
 app.use('/up', uploadRouter);
 app.use('/sports', sportRouter);
+app.use('/notify', notificationRouter);
 
 
 
