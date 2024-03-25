@@ -287,7 +287,7 @@ class UserAction {
 
                     async getRequestedUser(req,res) {
                         const listOfUser = req.body.users;
-                        console.log(req.users);
+                      
                         const data = await User.find({"_id" : {$in: listOfUser}});
                         if(data) {
                             const users = []
