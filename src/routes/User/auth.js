@@ -20,10 +20,11 @@ router.post('/hook', async (req, res) => {
             });
         });
         console.log('This is webhook');
-        res.status(200).send("OK");
+        
     } catch (err) {
         res.status(500).send("Internal Server Error");
     }
+    res.status(200).send("OK");
 });
 
 
