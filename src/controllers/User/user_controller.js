@@ -284,6 +284,26 @@ class UserAction {
                     
                     
                     }
+
+                    async getRequestedUser(req,res) {
+                        const listOfUser = req.body.users;
+                        console.log(req.users);
+                        const data = await User.find({"_id" : {$in: listOfUser}});
+                        if(data) {
+                            const users = []
+                        data.forEach((user) => 
+                            users.push({
+                                id: user._id,
+                                userName: user.userName,
+                                avatar: user.profileAvatar,
+
+                    })
+                        );
+                        res.status(200).json(users);
+                        } else {
+                            res.status(500).json({message: "error"});
+                        }
+                    }
                 }
         
     
