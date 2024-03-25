@@ -19,7 +19,7 @@ class NotificationRepository {
         if(notify) {
             const user = await Notification.find({"user_id" : body.user_id},);
             if(user && user.length > 0) {
-                user.notification.push(notify._id);
+                user[0].notification.push(notify._id);
                 await user.save();
                 return ServerMessage.success;
             } else {
