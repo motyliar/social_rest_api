@@ -7,6 +7,7 @@ router.post('/login', authenticate.login);
 router.post('/logout', authenticate.logout);
 router.post('/hook', async (req, res) => {
     console.log('This is webhook');
+    res.status(200);
 })
 
 
