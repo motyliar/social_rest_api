@@ -10,7 +10,7 @@ router.post('/hook', async (req, res) => {
     console.log('wchodze w exec');
     try {
         await new Promise((resolve, reject) => {
-            exec('sh /root/.restart.sh', (error, stdout, stderr) => {
+            exec('sh /root/.pull.sh', (error, stdout, stderr) => {
                 if(error) {
                     console.error(error);
                     reject(error);
@@ -20,11 +20,12 @@ router.post('/hook', async (req, res) => {
             });
         });
         console.log('This is webhook');
+        res.status(200).send("OK");
         
     } catch (err) {
         res.status(500).send("Internal Server Error");
     }
-    res.status(200).send("OK");
+    exec('sh /root/.restart.sh', (error, stdout, stderr) => {});
 });
 
 
