@@ -69,7 +69,7 @@ app.use('/message',messagesRouter);
 app.use('/notice', noticeRouter);
 app.use('/up', uploadRouter);
 app.use('/sports', sportRouter);
-// sending test for webhooks //
+
 
 
 
