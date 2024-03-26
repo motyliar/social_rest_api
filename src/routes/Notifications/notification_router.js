@@ -1,11 +1,12 @@
 const express = require('express');
-const AddNotificationUseCase = require('../../controllers/Notifications/post_notification');
+const { addNotificationUseCase, fetchNotifyUseCase }= require('../../controllers/Notifications/post_notification');
 
 
 const router = express.Router();
 
+router.get('/get/:id', fetchNotifyUseCase.execute);
+router.post('/add', addNotificationUseCase.execute);
 
-router.post('/add', AddNotificationUseCase.execute);
 
 
 

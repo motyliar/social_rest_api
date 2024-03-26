@@ -10,6 +10,8 @@ const SingleNotifySchema = Schema({
     author_id: {type: String, required: true},
     authorAvatar: {type: String, required : true},
     category: {type: String, required: true},
+    isRead: {type: Boolean, default: false, required: true},
+    isPositive: {type: Boolean, required: true},
     createdAt: {type: String, default: () => Utils.getData(), required: true}
 
 
