@@ -22,4 +22,23 @@ class AddNotificationUseCase {
     }
 }
 
-module.exports = new AddNotificationUseCase();
+class FetchNotifyUseCase {
+    async execute(req, res) {
+        const user = req.params.id;
+        try {
+            const data = await notifications.getAllNotify(user);
+            res.status(200).json(data);
+        } catch (e) {
+            res.status(500).json({message: e.message});
+        }
+    }
+}
+
+
+const addNotificationUseCase = new AddNotificationUseCase();
+const fetchNotifyUseCase = new FetchNotifyUseCase(); 
+
+module.exports = {
+    addNotificationUseCase,
+    fetchNotifyUseCase,
+}
