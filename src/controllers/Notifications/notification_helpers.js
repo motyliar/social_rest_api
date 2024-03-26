@@ -4,7 +4,8 @@ const notify = (body) =>  {
     "user_id" : body.user_id, 
     "event_id" : body.event_id, 
     "author_id" : body.author_id, 
-    "authorAvatar" : avatar, 
+    "authorAvatar" : avatar,
+    "authorName": body.authorName, 
     "category" : body.category,
     "isPositive": body.isPositive,
  };

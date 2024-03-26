@@ -40,6 +40,15 @@ class UpdateNoticeService {
         res.status(500).json({error: error});
        }
     }
+
+    async updateResolve(req, res) {
+        try {
+            await noticeRepository.updateNoticeToResolve(req.params.id);
+            res.status(200).json({message: ServerMessage.success});
+        } catch (e) {
+            res.status(500).json({error: e.message});
+        }
+    }
 }
 
 module.exports = new UpdateNoticeService();

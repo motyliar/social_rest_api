@@ -9,6 +9,7 @@ const SingleNotifySchema = Schema({
     event_id: {type: String, default: 'none'},
     author_id: {type: String, required: true},
     authorAvatar: {type: String, required : true},
+    authorName: {type: String, required: true},
     category: {type: String, required: true},
     isRead: {type: Boolean, default: false, required: true},
     isPositive: {type: Boolean, required: true},

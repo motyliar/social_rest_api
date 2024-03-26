@@ -39,6 +39,7 @@ router.delete('/comment/delete/:id', deleteNoticeServices.deleteSingleComment);
  */
 router.put('/single/update/:id', updateNoticeService.updateNoticeContent);
 router.put('/comment/update/:id', updateNoticeService.updateOneComment);
+router.put('/resolve/:id', updateNoticeService.updateResolve);
 
 
 module.exports = router;

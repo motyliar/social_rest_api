@@ -19,6 +19,7 @@ const noticeSchema = Schema({
     interested: {type: [String], default: [], },
     image: {type: String, required: false},
     isActive: {type: Boolean, default: true},
+    isResolve: {type: Boolean, default: false},
     createdAt: {type: String, default: () => Utils.getData(), required: true},
     updatedAt: {type: String, default: () => Utils.getData(), required: true},
 });

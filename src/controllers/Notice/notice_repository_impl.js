@@ -281,8 +281,18 @@ class NoticeRepositoryImpl extends NoticeRepository {
         
     } else {
         throw new ServerError(ServerMessage.notFound)
+        }
     }
-}
+
+    async updateNoticeToResolve(notice) {
+        const data = await Notice.findById(notice);
+        if(data != null) {
+            data.isResolve = true;
+            data.save();
+        }  else {
+            throw new ServerError(ServerMessage.notFound);     
+        };
+    }
 }
 
 
