@@ -67,11 +67,27 @@ class NotificationRepository {
         if(data) {
             const notifications = data.notification;
             return await this.findNotifyByList(notifications);
-
         } else {
             throw new ServerError(ServerMessage.fail);
         } 
+
         
+        
+    }
+
+    async findNotifyById(notify) {
+      try {
+        const data = await SingleNotify.findById(notify);
+        if(data != null) {
+         data.isRead = true;
+         data.save();
+        } 
+        else {
+         throw new ServerError(ServerMessage.notFound);
+        }
+      } catch(e) {
+        throw new ServerError({message: e.message});
+      }
     }
 
 

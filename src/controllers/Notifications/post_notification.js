@@ -34,11 +34,25 @@ class FetchNotifyUseCase {
     }
 }
 
+class UpdateIsReadUseCase {
+    async execute(req,res) {
+        try {
+           await notifications.findNotifyById(req.params.id);
+           res.status(200).json({message: ServerMessage.success});     
+        }
+        catch(e) {
+            res.status(500).json({message: e.message});
+        }
+    }
+}
+
 
 const addNotificationUseCase = new AddNotificationUseCase();
 const fetchNotifyUseCase = new FetchNotifyUseCase(); 
+const updateIsReadUseCase = new UpdateIsReadUseCase();
 
 module.exports = {
     addNotificationUseCase,
     fetchNotifyUseCase,
+    updateIsReadUseCase,
 }
