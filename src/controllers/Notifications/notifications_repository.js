@@ -66,7 +66,7 @@ class NotificationRepository {
         const data = await this.getUserNotifications(user)
         if(data) {
             const notifications = data.notification;
-            return allNotify = await this.findNotifyByList(notifications);
+            return await this.findNotifyByList(notifications);
 
         } else {
             throw new ServerError(ServerMessage.fail);
