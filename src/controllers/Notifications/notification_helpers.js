@@ -17,5 +17,9 @@ const userTable = (id, notify) => {
     }
 }
 
+const update = () => {
+    return { "isRead": false}
+}
 
-module.exports = { notify, userTable };
+
+module.exports = { notify, userTable, update };
