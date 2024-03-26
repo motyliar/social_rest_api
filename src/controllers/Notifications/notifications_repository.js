@@ -6,6 +6,8 @@ const Utils = require('../../core/Utils/utils');
 const { notify, userTable } = require("./notification_helpers");
 
 
+const userID = 'user_id';
+
 class NotificationRepository {
     
 
@@ -17,9 +19,9 @@ class NotificationRepository {
 
         const notify = await SingleNotify.create(this.createSingleNotify(body));
         if(notify) {
-            const user = await Notification.find({"user_id" : body.user_id},);
-            if(user && user.length > 0) {
-                user[0].notification.push(notify._id);
+            const user = await Notification.findOne({[userID] : body.user_id},);
+            if(user) {
+                user.notification.push(notify._id);
                 await user.save();
                 return ServerMessage.success;
             } else {

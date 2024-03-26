@@ -1,11 +1,12 @@
 const notify = (body) =>  {
-    const avatar = body.avatar || 'none';
+    const avatar = body.authorAvatar || 'none';
     return {
     "user_id" : body.user_id, 
     "event_id" : body.event_id, 
     "author_id" : body.author_id, 
     "authorAvatar" : avatar, 
-    "category" : body.category
+    "category" : body.category,
+    "isPositive": body.isPositive,
  };
 }
 
