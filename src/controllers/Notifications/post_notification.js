@@ -14,7 +14,7 @@ class AddNotificationUseCase {
          
         try {
         await notifications.addSingleNotify(body);
-        await this.resolveNotice(req.body.category, req.body.event_id);
+      
         res.status(200).json({message: ServerMessage.success});
 
         } catch (e) 
@@ -23,14 +23,7 @@ class AddNotificationUseCase {
                 );}
     }
 
-    async resolveNotice(category, notice) {
-        if(category === 'resolve') {
-            await Notice.findById(notice).then((data) => { 
-            data.isResolve = true;
-            data.save();                
-            });
-        } 
-    }
+
 }
 
 class FetchNotifyUseCase {
