@@ -3,7 +3,8 @@ const SingleNotify = require('../../models/Notification/single_notify');
 const ServerError = require('../../core/errors');
 const ServerMessage = require('../../core/servermessage');
 const Utils = require('../../core/Utils/utils');
-const { notify, userTable } = require("./notification_helpers");
+const { notify, userTable, noticeResolve } = require("./notification_helpers");
+
 // todo 
 // * create new function to fetch notification
 // * update field
@@ -31,10 +32,12 @@ class NotificationRepository {
             if(user) {
                 user.notification.push(notify._id);
                 await user.save();
+                await noticeResolve.addResolveToNotice(body.event_id, category, body.user_id);
                 return ServerMessage.success;
             } else {
-                const user = new Notification(userTable(body.user_id, notify._id))
+                const user = new Notification(userTable(body.user_id, notify._id));
                 await Notification.create(user);
+                await noticeResolve.addResolveToNotice(body.event_id, category, body.user_id);
                 return ServerMessage.success;
             }
         } else 
@@ -114,9 +117,6 @@ class NotificationRepository {
             } else {
                 throw new ServerError(ServerMessage.fail);
             }
-
-      
-
     }
 
 

@@ -1,3 +1,5 @@
+const Notice = require('../../models/Notice/notice_model');
+
 const notify = (body) =>  {
     const avatar = body.authorAvatar || 'none';
     return {
@@ -22,5 +24,20 @@ const update = () => {
     return { "isRead": false}
 }
 
+class NoticeResolveHandler {
 
-module.exports = { notify, userTable, update };
+    async addResolveToNotice(notice, category, user) {
+            if(category === 'resolve') {
+                const data = await Notice.findOne({'_id': notice});
+                data.resolutions.push(user);
+                await data.save();
+            } 
+    }
+}
+
+const noticeResolve = new NoticeResolveHandler();
+
+
+
+
+module.exports = { notify, userTable, update, noticeResolve };
