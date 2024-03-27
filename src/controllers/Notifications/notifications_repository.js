@@ -57,7 +57,7 @@ class NotificationRepository {
         
     }
     async findNotifyByList(notifications) {
-       return await SingleNotify.find({_id : {$in: notifications}});
+       return await SingleNotify.find({_id : {$in: notifications}}).sort({"createdAt" : -1});
     }
 
    
