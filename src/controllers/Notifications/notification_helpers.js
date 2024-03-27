@@ -27,7 +27,7 @@ const update = () => {
 class NoticeResolveHandler {
 
     async addResolveToNotice(notice, category, user) {
-            console.log(`check for ${category}`);
+        console.log(`${category}, work`);
             if(category === 'resolve') {
                 const data = await Notice.findOne({'_id': notice});
                 data.resolutions.push(user);
