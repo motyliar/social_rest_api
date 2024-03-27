@@ -50,13 +50,26 @@ class UpdateIsReadUseCase {
     }
 }
 
+class GetAllNotifications {
+    async execute(req,res) {
+        try {
+           const data = await notifications.getAllNotifications();
+            res.status(200).json(data);
+        } catch(e) {
+            res.status(500).json({error: e.message});
+        }
+    }
+}
+
 
 const addNotificationUseCase = new AddNotificationUseCase();
 const fetchNotifyUseCase = new FetchNotifyUseCase(); 
 const updateIsReadUseCase = new UpdateIsReadUseCase();
+const getAllNotifications = new GetAllNotifications();
 
 module.exports = {
     addNotificationUseCase,
     fetchNotifyUseCase,
     updateIsReadUseCase,
+    getAllNotifications,
 }
