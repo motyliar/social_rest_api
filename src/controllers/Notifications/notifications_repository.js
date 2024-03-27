@@ -100,6 +100,25 @@ class NotificationRepository {
         }
     }
 
+    async deleteNotify(notify, user) {
+        const data = await SingleNotify.findByIdAndDelete(notify);
+        const deleteFromCollection = await Notification.updateOne(
+            {"user_id": user},
+            { $pull: {notification: notify}
+            
+            }
+            );
+
+            if(data && deleteFromCollection) {
+                return ServerMessage.success;
+            } else {
+                throw new ServerError(ServerMessage.fail);
+            }
+
+      
+
+    }
+
 
 
     

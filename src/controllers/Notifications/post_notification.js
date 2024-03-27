@@ -65,15 +65,30 @@ class GetAllNotifications {
     }
 }
 
+class DeleteNotifyUseCase {
+    async execute(req ,res) {
+        try {
+            const data = await notifications.deleteNotify(req.body.notify, req.body.user);
+            if(data === ServerMessage.success) {
+                res.status(200).json({message: data});
+            }
+        } catch(e) {
+            res.status(500).json({error: e.message});
+        }
+    }
+}
+
 
 const addNotificationUseCase = new AddNotificationUseCase();
 const fetchNotifyUseCase = new FetchNotifyUseCase(); 
 const updateIsReadUseCase = new UpdateIsReadUseCase();
 const getAllNotifications = new GetAllNotifications();
+const deleteNotifyUseCase = new DeleteNotifyUseCase();
 
 module.exports = {
     addNotificationUseCase,
     fetchNotifyUseCase,
     updateIsReadUseCase,
     getAllNotifications,
+    deleteNotifyUseCase,
 }
