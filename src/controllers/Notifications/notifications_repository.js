@@ -32,7 +32,7 @@ class NotificationRepository {
             if(user) {
                 user.notification.push(notify._id);
                 await user.save();
-                await noticeResolve.addResolveToNotice(body.event_id, category, body.user_id);
+                await noticeResolve.addResolveToNotice(body.event_id, body.category, body.user_id);
                 return ServerMessage.success;
             } else {
                 const user = new Notification(userTable(body.user_id, notify._id));
