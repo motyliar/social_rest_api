@@ -16,6 +16,7 @@ const noticeSchema = Schema({
     content: {type: contentSchema, required: true},
     comments: {type: [commentsSchema], default: [], required: false,},
     requests: {type: [String], default: [], },
+    resolutions: {type: [String], default: []},
     interested: {type: [String], default: [], },
     image: {type: String, required: false},
     isActive: {type: Boolean, default: true},
