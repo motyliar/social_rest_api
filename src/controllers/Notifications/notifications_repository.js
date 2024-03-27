@@ -90,6 +90,16 @@ class NotificationRepository {
       }
     }
 
+    async getAllNotifications() {
+        const data = await SingleNotify.find({});
+        if(data.length > 0) {
+            return data;
+
+        } else {
+            throw new ServerError(ServerMessage.notFound);
+        }
+    }
+
 
 
     
