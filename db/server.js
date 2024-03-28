@@ -26,6 +26,7 @@ const path = require('path');
 
 const avatarsPath = path.join(__dirname, '..', 'avatars');
 const imagesPath = path.join(__dirname,'..', 'app_images');
+const folioPath = path.join(__dirname, '..', 'folio');
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, 'cert-key.pem')),
@@ -63,6 +64,7 @@ app.use((err, req, res, next) => {
 
  app.use('/avatars/', express.static(avatarsPath));
  app.use('/app_images/', express.static(imagesPath));
+ app.use('/folio', express.static(folioPath));
 app.use('/', authRouter);
 app.use(`${USERROUTECODE}/climbuser`, userRouter);
 app.use('/connection', connectionRouter);
