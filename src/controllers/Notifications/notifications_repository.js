@@ -37,7 +37,7 @@ class NotificationRepository {
             } else {
                 const user = new Notification(userTable(body.user_id, notify._id));
                 await Notification.create(user);
-                await noticeResolve.addResolveToNotice(body.event_id, category, body.user_id);
+                await noticeResolve.addResolveToNotice(body.event_id, body.category, body.user_id);
                 return ServerMessage.success;
             }
         } else 
